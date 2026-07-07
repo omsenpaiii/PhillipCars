@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useCallback } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCarsAction, CarFilters } from "../actions/cars";
@@ -49,23 +49,36 @@ function CarSkeleton() {
   );
 }
 
+interface Car {
+  id: string;
+  name: string;
+  type: string;
+  image: string;
+  price_per_day: string;
+  rent_to_own_price: string;
+  doors: number;
+  passengers: number;
+  bags: number;
+  transmission: string;
+  status: string;
+  features?: string[];
+  host_id?: string;
+}
+
 function CarsContent() {
-  const [cars, setCars] = useState<any[]>([]);
+  const [mounted, setMounted] = useState(false);
+  const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasFetched, setHasFetched] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const [search, setSearch] = useState("");
-  const [type, setType] = useState(searchParams.get("type") || "all");
+  const [type, setType] = useState("all");
   const [transmission, setTransmission] = useState("all");
   const [maxPrice, setMaxPrice] = useState(500);
 
-  useEffect(() => {
-    fetchCars();
-  }, [type, transmission, maxPrice]);
-
-  const fetchCars = async () => {
+  const fetchCars = useCallback(async () => {
     setLoading(true);
     const filters: CarFilters = {
       type,
@@ -75,11 +88,31 @@ function CarsContent() {
     };
     const res = await getCarsAction(filters);
     if (res.success && res.cars) {
-      setCars(res.cars);
+      setCars(res.cars as Car[]);
     }
     setLoading(false);
     setHasFetched(true);
-  };
+  }, [type, transmission, maxPrice, search]);
+
+  useEffect(() => {
+    const typeParam = searchParams.get("type");
+    const timer = setTimeout(() => {
+      setMounted(true);
+      if (typeParam) {
+        setType(typeParam);
+      }
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (mounted) {
+      const timer = setTimeout(() => {
+        fetchCars();
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [mounted, fetchCars]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -187,7 +220,7 @@ function CarsContent() {
 
         {/* Cars Grid */}
         <div className="col-lg-9">
-          {loading ? (
+          {(!mounted || loading) ? (
             <div className="row">
               {[1, 2, 3, 4].map((n) => (
                 <div key={n} className="col-md-6 mb-4">

@@ -1,67 +1,115 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function MagicCursor() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [ballPos, setBallPos] = useState({ x: 0, y: 0 });
+  const [mounted, setMounted] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [cursorText, setCursorText] = useState("");
   const [isOpaque, setIsOpaque] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const ballRef = useRef<HTMLDivElement>(null);
+  const mouseCoords = useRef({ x: 0, y: 0 });
+  const ballCoords = useRef({ x: 0, y: 0 });
+
+  const cursorTextRef = useRef("");
+  const isOpaqueRef = useRef(false);
+  const hasMovedRef = useRef(false);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+    const isCoarse = window.matchMedia("(pointer: coarse)").matches;
 
-      // Event delegation: find closest elements with cursor attributes
+    const timer = setTimeout(() => {
+      setMounted(true);
+      if (isCoarse) {
+        setDisabled(true);
+      }
+    }, 0);
+
+    if (isCoarse) {
+      return () => clearTimeout(timer);
+    }
+
+    let animationFrameId: number;
+
+    const updatePosition = () => {
+      // Interpolate ball position towards mouse position
+      const dx = mouseCoords.current.x - ballCoords.current.x;
+      const dy = mouseCoords.current.y - ballCoords.current.y;
+
+      ballCoords.current.x += dx * 0.15;
+      ballCoords.current.y += dy * 0.15;
+
+      // Update inline styles directly via refs
+      if (cursorRef.current) {
+        cursorRef.current.style.left = `${mouseCoords.current.x}px`;
+        cursorRef.current.style.top = `${mouseCoords.current.y}px`;
+      }
+      if (ballRef.current) {
+        ballRef.current.style.left = `${ballCoords.current.x}px`;
+        ballRef.current.style.top = `${ballCoords.current.y}px`;
+      }
+
+      animationFrameId = requestAnimationFrame(updatePosition);
+    };
+
+    animationFrameId = requestAnimationFrame(updatePosition);
+
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseCoords.current = { x: e.clientX, y: e.clientY };
+
+      // Set visibility to true on first movement
+      if (!hasMovedRef.current) {
+        hasMovedRef.current = true;
+        setVisible(true);
+      }
+
       const target = e.target as HTMLElement;
       if (!target) return;
 
-      const cursorTextEl = target.closest("[data-cursor-text]");
-      const cursorOpaqueEl = target.closest("[data-cursor]");
+      // Find closest element with either attribute to determine precedence
+      const closestEl = target.closest("[data-cursor], [data-cursor-text]");
+      let newText = "";
+      let newOpaque = false;
 
-      if (cursorTextEl) {
-        setCursorText(cursorTextEl.getAttribute("data-cursor-text") || "");
-        setIsOpaque(false);
-      } else if (cursorOpaqueEl) {
-        setCursorText("");
-        setIsOpaque(true);
-      } else {
-        setCursorText("");
-        setIsOpaque(false);
+      if (closestEl) {
+        if (closestEl.hasAttribute("data-cursor-text")) {
+          newText = closestEl.getAttribute("data-cursor-text") || "";
+        } else if (closestEl.hasAttribute("data-cursor")) {
+          newOpaque = true;
+        }
+      }
+
+      // Only update state if attributes have changed
+      if (cursorTextRef.current !== newText) {
+        cursorTextRef.current = newText;
+        setCursorText(newText);
+      }
+      if (isOpaqueRef.current !== newOpaque) {
+        isOpaqueRef.current = newOpaque;
+        setIsOpaque(newOpaque);
       }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
+
     return () => {
+      clearTimeout(timer);
+      cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
-  // Smooth ball animation
-  useEffect(() => {
-    let animationFrameId: number;
-    const updateBall = () => {
-      setBallPos((prev) => {
-        const dx = mousePos.x - prev.x;
-        const dy = mousePos.y - prev.y;
-        return {
-          x: prev.x + dx * 0.15,
-          y: prev.y + dy * 0.15,
-        };
-      });
-      animationFrameId = requestAnimationFrame(updateBall);
-    };
+  if (!mounted || disabled) {
+    return null;
+  }
 
-    animationFrameId = requestAnimationFrame(updateBall);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [mousePos]);
-
-  // Determine styles dynamically
+  // Determine styles dynamically for non-position aspects
   const getBallStyle = (): React.CSSProperties => {
     const defaultStyle: React.CSSProperties = {
       position: "fixed",
-      left: `${ballPos.x}px`,
-      top: `${ballPos.y}px`,
       transform: "translate(-50%, -50%)",
       borderRadius: "50%",
       pointerEvents: "none",
@@ -108,8 +156,18 @@ export default function MagicCursor() {
   };
 
   return (
-    <div id="magic-cursor">
-      <div id="ball" style={getBallStyle()}>
+    <div
+      id="magic-cursor"
+      ref={cursorRef}
+      style={{
+        position: "fixed",
+        pointerEvents: "none",
+        zIndex: 1000000,
+        opacity: visible ? 1 : 0,
+        transition: "opacity 0.3s ease",
+      }}
+    >
+      <div id="ball" ref={ballRef} style={getBallStyle()}>
         {cursorText}
       </div>
     </div>
