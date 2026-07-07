@@ -9,11 +9,11 @@
 ## Milestones
 | # | Name | Scope | Dependencies | Status | Conv ID |
 |---|------|-------|-------------|--------|---------|
-| 1 | Explore & Analyze | Find cursor, footer, and cars hydration files and plan changes. | None | PLANNED | TBD |
-| 2 | M1: Custom Cursor | Verify/fix custom cursor interactions (`data-cursor-text`, `data-cursor`). | None | PLANNED | TBD |
-| 3 | M2: Footer Align/Spell | Fix newsletter email input frame alignment and spelling 'Newsleeters'. | None | PLANNED | TBD |
-| 4 | M3: Fleet Hydration | Immediate rendering of loading skeletons for `/cars` list dynamic hydration. | None | PLANNED | TBD |
-| 5 | E2E & Production Build | Run production build verification and integrity audit. | M1, M2, M3 | PLANNED | TBD |
+| 1 | Explore & Analyze | Find cursor, footer, and cars hydration files and plan changes. | None | DONE | 7785b750-ef13-4c9c-a47a-166a44642585 |
+| 2 | M1: Custom Cursor | Verify/fix custom cursor interactions (`data-cursor-text`, `data-cursor`). | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
+| 3 | M2: Footer Align/Spell | Fix newsletter email input frame alignment and spelling 'Newsleeters'. | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
+| 4 | M3: Fleet Hydration | Immediate rendering of loading skeletons for `/cars` list dynamic hydration. | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
+| 5 | E2E & Production Build | Run production build verification and integrity audit. | M1, M2, M3 | IN_PROGRESS | e20804cd-abd1-44c8-be65-70a5261dfe09 |
 
 ## Interface Contracts
 - Newsletter button remains nested properly within its wrapper/input frame.
