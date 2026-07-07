@@ -15,8 +15,8 @@ const epilogue = Epilogue({
 });
 
 export const metadata: Metadata = {
-  title: "Novaride - Car Rental HTML Template",
-  description: "Experience the ease and convenience of renting a car with Novaride. We offer a wide range of vehicles to suit your needs.",
+  title: "PhillipCars - Premium Car Rent & Rent-to-Own",
+  description: "Experience the ease and convenience of renting or owning a car with PhillipCars. We offer a wide range of vehicles to suit your needs.",
   icons: {
     icon: "/images/favicon.png",
   }

@@ -21,13 +21,16 @@ export default function Footer() {
             <div className="about-footer">
               {/* Footer Logo Start */}
               <div className="footer-logo">
-                <img src="/images/footer-logo.svg" alt="Footer Logo" />
+                <div style={{ display: "inline-flex", alignItems: "center", textDecoration: "none", marginBottom: "15px" }}>
+                  <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1px" }}>Phillip</span>
+                  <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "#ffffff", textTransform: "uppercase", letterSpacing: "-1px" }}>Cars</span>
+                </div>
               </div>
               {/* Footer Logo End */}
 
               {/* About Footer Content Start */}
               <div className="about-footer-content">
-                <p>Experience the ease and convenience of renting a car with Novaride.</p>
+                <p>Experience the ease and convenience of renting a car with PhillipCars.</p>
               </div>
               {/* About Footer Content End */}
             </div>
@@ -126,7 +129,7 @@ export default function Footer() {
             <div className="col-lg-6 col-md-7">
               {/* Footer Copyright Start */}
               <div className="footer-copyright-text">
-                <p>© 2024 Novaride. All rights reserved.</p>
+                <p>© 2026 PhillipCars. All rights reserved.</p>
               </div>
               {/* Footer Copyright End */}
             </div>

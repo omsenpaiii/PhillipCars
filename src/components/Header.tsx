@@ -49,13 +49,10 @@ export default function Header() {
           <div className="container">
             {/* Logo Start */}
             <Link className="navbar-brand" href="/">
-              <img
-                src="/images/logo.svg"
-                alt="Logo"
-                width={160}
-                height={40}
-                style={{ height: "auto" }}
-              />
+              <div style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}>
+                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1px" }}>Phillip</span>
+                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "var(--primary-color)", textTransform: "uppercase", letterSpacing: "-1px" }}>Cars</span>
+              </div>
             </Link>
             {/* Logo End */}
 

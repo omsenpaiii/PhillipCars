@@ -123,7 +123,7 @@ export default function ListCarPage() {
                       List Your Vehicle
                     </h2>
                     <p style={{ color: "var(--text-color)", fontSize: "14px" }}>
-                      Earn money by sharing your car on the NovaRide platform
+                      Earn money by sharing your car on the PhillipCars platform
                     </p>
                   </div>
 

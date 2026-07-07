@@ -2,8 +2,8 @@ import crypto from "crypto";
 import { cookies } from "next/headers";
 import { query } from "./db";
 
-const JWT_SECRET = process.env.JWT_SECRET || "novaride_secret_key_2026_omtomar";
-const COOKIE_NAME = "novaride_session";
+const JWT_SECRET = process.env.JWT_SECRET || "phillipcars_secret_key_2026_omtomar";
+const COOKIE_NAME = "phillipcars_session";
 
 export function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
