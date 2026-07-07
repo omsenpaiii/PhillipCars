@@ -118,20 +118,21 @@ export default function MagicCursor() {
       alignItems: "center",
       justifyContent: "center",
       fontFamily: "var(--font-epilogue), sans-serif",
-      fontSize: "10px",
-      fontWeight: 800,
+      fontSize: "11px",
+      fontWeight: 900,
       textTransform: "uppercase",
-      color: "#fff",
+      color: "#000", // Black text inverts beautifully over diff backgrounds
       letterSpacing: "0.5px",
+      mixBlendMode: "difference",
       transition: "width 0.25s ease, height 0.25s ease, background-color 0.25s ease, border 0.25s ease",
     };
 
     if (cursorText) {
       return {
         ...defaultStyle,
-        width: "70px",
-        height: "70px",
-        backgroundColor: "var(--accent-color)",
+        width: "75px",
+        height: "75px",
+        backgroundColor: "#ffffff",
         border: "none",
       };
     }
@@ -141,8 +142,8 @@ export default function MagicCursor() {
         ...defaultStyle,
         width: "45px",
         height: "45px",
-        backgroundColor: "rgba(255, 54, 0, 0.25)",
-        border: "1px solid var(--accent-color)",
+        backgroundColor: "#ffffff",
+        border: "none",
       };
     }
 
@@ -150,7 +151,7 @@ export default function MagicCursor() {
       ...defaultStyle,
       width: "8px",
       height: "8px",
-      backgroundColor: "var(--accent-color)",
+      backgroundColor: "#ffffff",
       border: "none",
     };
   };

@@ -52,8 +52,8 @@ export default function Header() {
             {/* Logo Start */}
             <Link className="navbar-brand" href="/">
               <div style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}>
-                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1px" }}>Phillip</span>
-                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 800, fontSize: "28px", color: "var(--primary-color)", textTransform: "uppercase", letterSpacing: "-1px" }}>Cars</span>
+                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1.5px" }}>PHILLIP</span>
+                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "var(--primary-color)", textTransform: "uppercase", letterSpacing: "-1.5px" }}>CARS</span>
               </div>
             </Link>
             {/* Logo End */}

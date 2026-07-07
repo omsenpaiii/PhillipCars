@@ -11,28 +11,28 @@ export default function Testimonials() {
       role: "project manager",
       image: "/images/author-1.jpg",
       rating: 5,
-      comment: "Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
     },
     {
       name: "annette black",
       role: "project manager",
       image: "/images/author-2.jpg",
       rating: 4,
-      comment: "Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
     },
     {
       name: "leslie alexander",
       role: "project manager",
       image: "/images/author-3.jpg",
       rating: 3,
-      comment: "Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
     },
     {
       name: "alis white",
       role: "project manager",
       image: "/images/author-4.jpg",
       rating: 5,
-      comment: "Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
     },
   ];
 
