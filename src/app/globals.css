@@ -1,26 +1,46 @@
-@import "tailwindcss";
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "./custom.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --default-font: var(--font-dm-sans), sans-serif !important;
+  --accent-font: var(--font-epilogue), sans-serif !important;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom button arrows overflow correction */
+.btn-no-overflow {
+  margin-right: 0 !important;
+  padding-right: 55px !important;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.btn-no-overflow::before {
+  transform: translate(0, -50%) !important;
+  right: 4px !important;
+  top: 50% !important;
+  bottom: auto !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+.btn-no-overflow:hover::before {
+  transform: translate(0, -50%) rotate(45deg) !important;
+}
+
+/* Skeleton Loading Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.skeleton-shimmer {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
 }
