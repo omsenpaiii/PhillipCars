@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function CTA() {
   return (
@@ -21,9 +22,9 @@ export default function CTA() {
 
               {/* Cta Box Btn Start */}
               <div className="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
-                <a href="#contact" className="btn-default">
+                <Link href="/#contact" className="btn-default">
                   contact us
-                </a>
+                </Link>
               </div>
               {/* Cta Box Btn End */}
             </div>

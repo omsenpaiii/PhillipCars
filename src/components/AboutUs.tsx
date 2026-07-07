@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FadeIn, SlideIn } from "./Motion";
+import Link from "next/link";
 
 export default function AboutUs() {
   return (
@@ -88,9 +89,9 @@ export default function AboutUs() {
 
               {/* About Content Footer Start */}
               <FadeIn delay={0.6} className="about-content-footer wow fadeInUp">
-                <a href="#contact" className="btn-default">
+                <Link href="/#contact" className="btn-default">
                   contact us
-                </a>
+                </Link>
               </FadeIn>
               {/* About Content Footer End */}
             </div>

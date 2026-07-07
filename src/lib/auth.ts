@@ -5,6 +5,19 @@ import { query } from "./db";
 const JWT_SECRET = process.env.JWT_SECRET || "phillipcars_secret_key_2026_omtomar";
 const COOKIE_NAME = "phillipcars_session";
 
+export interface SessionPayload {
+  userId: string;
+  exp: number;
+}
+
+export interface SessionUser {
+  id: string;
+  email: string;
+  full_name: string | null;
+  phone: string | null;
+  created_at: string | Date;
+}
+
 export function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
   const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
@@ -18,7 +31,7 @@ export function verifyPassword(password: string, storedHash: string): boolean {
   return testHash === hash;
 }
 
-export function signToken(payload: any): string {
+export function signToken(payload: SessionPayload): string {
   const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
   const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
   const signature = crypto
@@ -28,7 +41,7 @@ export function signToken(payload: any): string {
   return `${header}.${data}.${signature}`;
 }
 
-export function verifyToken(token: string): any | null {
+export function verifyToken(token: string): SessionPayload | null {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;
@@ -39,9 +52,10 @@ export function verifyToken(token: string): any | null {
       .digest("base64url");
     if (testSig !== signature) return null;
 
-    const payload = JSON.parse(Buffer.from(data, "base64url").toString("utf8"));
+    const payload = JSON.parse(Buffer.from(data, "base64url").toString("utf8")) as Partial<SessionPayload>;
     if (payload.exp && Date.now() > payload.exp) return null;
-    return payload;
+    if (!payload.userId || !payload.exp) return null;
+    return { userId: payload.userId, exp: payload.exp };
   } catch {
     return null;
   }
@@ -65,7 +79,7 @@ export async function clearSession() {
   cookieStore.delete(COOKIE_NAME);
 }
 
-export async function getSessionUser() {
+export async function getSessionUser(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
@@ -74,7 +88,7 @@ export async function getSessionUser() {
   if (!payload || !payload.userId) return null;
 
   try {
-    const res = await query(
+    const res = await query<SessionUser>(
       "SELECT id, email, full_name, phone, created_at FROM public.profiles WHERE id = $1",
       [payload.userId]
     );

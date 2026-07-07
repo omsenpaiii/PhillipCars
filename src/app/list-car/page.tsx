@@ -7,7 +7,6 @@ import { listCarAction } from "../actions/cars";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FadeIn, ScaleIn } from "@/components/Motion";
-import Link from "next/link";
 
 const CAR_TEMPLATES = [
   { id: "bmw", name: "BMW M2 Template", image: "/images/perfect-fleet-img-1.png" },
@@ -17,7 +16,6 @@ const CAR_TEMPLATES = [
 ];
 
 export default function ListCarPage() {
-  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [submitLoading, setSubmitLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +34,6 @@ export default function ListCarPage() {
         router.push("/auth?redirect=/list-car");
         return;
       }
-      setUser(currentUser);
       setLoading(false);
     }
     checkAuth();
@@ -71,7 +68,7 @@ export default function ListCarPage() {
           router.refresh();
         }, 1500);
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setSubmitLoading(false);

@@ -466,6 +466,21 @@ header.main-header .header-sticky.active{
 	margin: 0;
 }
 
+.brand-logo{
+	display: inline-flex;
+	align-items: baseline;
+	white-space: nowrap;
+	font-family: var(--accent-font);
+	font-weight: 900;
+	line-height: 0.9;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.brand-logo span{
+	display: inline-block;
+}
+
 .main-menu .nav-menu-wrapper{
 	flex: 1;
 	text-align: center;
@@ -1321,11 +1336,41 @@ header.main-header .header-sticky.active{
 	border: 1px solid var(--divider-color);
 	border-radius: 30px;
 	padding: 20px;
+	background-color: var(--white-color);
+	height: 100%;
+	overflow: hidden;
+	transition: background-color 0.35s ease-in-out, border-color 0.35s ease-in-out, transform 0.35s ease-in-out, box-shadow 0.35s ease-in-out;
 }
 
 .perfect-fleet-item .image-box{
+	display: block;
 	text-align: center;
 	margin-bottom: 25px;
+	border-radius: 22px;
+	overflow: hidden;
+	position: relative;
+	background-color: var(--secondary-color);
+	cursor: none;
+}
+
+.perfect-fleet-item .image-box::after{
+	content: "";
+	position: absolute;
+	width: 180%;
+	height: 0;
+	left: 50%;
+	top: 50%;
+	background-color: rgba(255, 255, 255, 0.35);
+	transform: translate(-50%, -50%) rotate(-45deg);
+	transition: height 0.45s ease-in-out, background-color 0.45s ease-in-out;
+}
+
+.perfect-fleet-item .image-box img{
+	width: 100%;
+	aspect-ratio: 16 / 10;
+	object-fit: contain;
+	padding: 12px;
+	transition: transform 0.45s ease-in-out;
 }
 
 .perfect-fleet-title{
@@ -1341,17 +1386,21 @@ header.main-header .header-sticky.active{
 	border-radius: 100px;
 	padding: 10px 20px;
 	margin-bottom: 15px;
+	text-transform: capitalize;
+	transition: all 0.35s ease-in-out;
 }
 
 .perfect-fleet-title h2{
 	font-size: 20px;
 	font-weight: 600;
+	transition: color 0.35s ease-in-out;
 }
 
 .perfect-fleet-body{
 	border-bottom: 1px solid var(--divider-color);
 	margin-bottom: 25px;
 	padding-bottom: 25px;
+	transition: border-color 0.35s ease-in-out;
 }
 
 .perfect-fleet-body ul{
@@ -1368,6 +1417,7 @@ header.main-header .header-sticky.active{
     width: calc(50% - 5px);
     text-transform: capitalize;
     padding-left: 25px;
+	transition: color 0.35s ease-in-out;
 }
 
 .perfect-fleet-body ul li img{
@@ -1375,6 +1425,7 @@ header.main-header .header-sticky.active{
 	left: 0;
 	top: 50%;
 	transform: translateY(-50%);
+	transition: filter 0.35s ease-in-out;
 }
 
 .perfect-fleet-footer{
@@ -1389,11 +1440,20 @@ header.main-header .header-sticky.active{
 .perfect-fleet-pricing h2{
 	font-family: var(--default-font);
 	font-size: 24px;
+	transition: color 0.35s ease-in-out;
 }
 
 .perfect-fleet-pricing h2 span{
 	font-size: 14px;
 	font-weight: 400;
+}
+
+.perfect-fleet-pricing p{
+	color: var(--text-color);
+	font-size: 12px;
+	line-height: 1.4;
+	margin: 4px 0 0;
+	transition: color 0.35s ease-in-out;
 }
 
 .perfect-fleet-btn .section-icon-btn{
@@ -1404,7 +1464,7 @@ header.main-header .header-sticky.active{
 }
 
 .perfect-fleet-item:hover .perfect-fleet-btn .section-icon-btn{
-	background-color: var(--primary-color);
+	background-color: var(--white-color);
 }
 
 .perfect-fleet-btn .section-icon-btn img{
@@ -1413,6 +1473,43 @@ header.main-header .header-sticky.active{
 
 .perfect-fleet-item:hover .perfect-fleet-btn .section-icon-btn img{
 	transform: rotate(45deg);
+	filter: brightness(0);
+}
+
+.perfect-fleet-item:hover{
+	background-color: var(--primary-color);
+	border-color: var(--primary-color);
+	transform: translateY(-6px);
+	box-shadow: 0 20px 50px rgba(4, 4, 1, 0.14);
+}
+
+.perfect-fleet-item:hover .image-box img{
+	transform: scale(1.05);
+}
+
+.perfect-fleet-item:hover .image-box::after{
+	height: 250%;
+	background-color: transparent;
+}
+
+.perfect-fleet-item:hover .perfect-fleet-title h2,
+.perfect-fleet-item:hover .perfect-fleet-body ul li,
+.perfect-fleet-item:hover .perfect-fleet-pricing h2,
+.perfect-fleet-item:hover .perfect-fleet-pricing p{
+	color: var(--white-color);
+}
+
+.perfect-fleet-item:hover .perfect-fleet-title h3{
+	background-color: var(--accent-color);
+	color: var(--white-color);
+}
+
+.perfect-fleet-item:hover .perfect-fleet-body{
+	border-color: var(--dark-divider-color);
+}
+
+.perfect-fleet-item:hover .perfect-fleet-body ul li img{
+	filter: brightness(0) invert(1);
 }
 
 .car-details-btn{
@@ -2400,8 +2497,21 @@ header.main-header .header-sticky.active{
 	transition: all 0.3s ease-in-out;
 }
 
-.footer-links ul li:hover a{
+.footer-links ul li:hover a,
+.footer-links ul li:hover .footer-text-button{
 	color: var(--accent-color);
+}
+
+.footer-text-button{
+	background: transparent;
+	border: 0;
+	color: var(--white-color);
+	cursor: default;
+	font: inherit;
+	padding: 0;
+	text-align: left;
+	text-transform: capitalize;
+	transition: all 0.3s ease-in-out;
 }
 
 .footer-newsletter-form .form-group{
@@ -2506,6 +2616,11 @@ header.main-header .header-sticky.active{
 	border-radius: 46px;
 	overflow: hidden;
 	padding: 140px 0;
+}
+
+.page-header > .container{
+	position: relative;
+	z-index: 2;
 }
 
 .page-header:before{
@@ -6558,4 +6673,3 @@ header.main-header .header-sticky.active{
 		font-size: 28px;
 	}
 }
-

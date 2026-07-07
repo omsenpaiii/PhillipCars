@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getCurrentUserAction, signOutAction } from "@/app/actions/auth";
+import BrandLogo from "@/components/BrandLogo";
+import type { SessionUser } from "@/lib/auth";
 
 export default function Header() {
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<SessionUser | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -37,13 +38,6 @@ export default function Header() {
     window.location.href = "/";
   };
 
-  const toggleSubmenu = (menuName: string, e: React.MouseEvent) => {
-    if (window.innerWidth < 992) {
-      e.preventDefault();
-      setActiveSubmenu(activeSubmenu === menuName ? null : menuName);
-    }
-  };
-
   return (
     <header className="main-header">
       <div className={`header-sticky ${isSticky ? "active" : ""}`}>
@@ -51,10 +45,7 @@ export default function Header() {
           <div className="container">
             {/* Logo Start */}
             <Link className="navbar-brand" href="/">
-              <div style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}>
-                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1.5px" }}>PHILLIP</span>
-                <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "var(--primary-color)", textTransform: "uppercase", letterSpacing: "-1.5px" }}>CARS</span>
-              </div>
+              <BrandLogo />
             </Link>
             {/* Logo End */}
 
@@ -78,19 +69,19 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/#about">
+                    <Link className="nav-link" href="/#about">
                       About Us
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/#services">
+                    <Link className="nav-link" href="/#services">
                       Services
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="/#contact">
+                    <Link className="nav-link" href="/#contact">
                       Contact Us
-                    </a>
+                    </Link>
                   </li>
                   {user && (
                     <li className="nav-item">
@@ -164,14 +155,19 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <a href="/#about" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/#about" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#services" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/#services" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
                   Services
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/#contact" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  Contact Us
+                </Link>
               </li>
               {user ? (
                 <>

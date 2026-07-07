@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FadeIn, FadeInStagger, FadeInStaggerItem } from "./Motion";
+import Link from "next/link";
 
 export default function Services() {
   const services = [
@@ -60,9 +61,9 @@ export default function Services() {
                   <p>{srv.desc}</p>
                 </div>
                 <div className="service-footer">
-                  <a href="#" className="section-icon-btn">
+                  <Link href="/cars" className="section-icon-btn" data-cursor-text="View">
                     <img src="/images/arrow-white.svg" alt="Arrow" />
-                  </a>
+                  </Link>
                 </div>
               </FadeInStaggerItem>
               {/* Service Item End */}
@@ -76,9 +77,9 @@ export default function Services() {
                 Discover our range of car rental services designed to meet all your travel needs.
                 From a diverse fleet of vehicles to flexible rental plans.
               </p>
-              <a href="#" className="btn-default">
+              <Link href="/cars" className="btn-default">
                 view all service
-              </a>
+              </Link>
             </FadeIn>
             {/* Service Box Footer End */}
           </div>

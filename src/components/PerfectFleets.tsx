@@ -4,10 +4,11 @@ import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { getCarsAction } from "@/app/actions/cars";
-import Link from "next/link";
+import FleetCard from "@/components/FleetCard";
+import { SEED_FLEET, type FleetCar } from "@/lib/fleet-data";
 
 export default function PerfectFleets() {
-  const [fleets, setFleets] = useState<any[]>([]);
+  const [fleets, setFleets] = useState<FleetCar[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,53 +17,7 @@ export default function PerfectFleets() {
       if (res.success && res.cars && res.cars.length > 0) {
         setFleets(res.cars);
       } else {
-        // Fallback to static items if DB is empty or fails
-        setFleets([
-          {
-            id: "db2897bf-7d3a-4ffe-832d-81e2e9f45ecf",
-            type: "luxury",
-            name: "BMW M2 Car 2017",
-            image: "/images/perfect-fleet-img-1.png",
-            price_per_day: "280",
-            passengers: 4,
-            doors: 4,
-            bags: 3,
-            transmission: "auto"
-          },
-          {
-            id: "6ef37e12-2bff-4bee-9189-5cdbf18311e4",
-            type: "luxury",
-            name: "Audi RS7 Car 2016",
-            image: "/images/perfect-fleet-img-2.png",
-            price_per_day: "320",
-            passengers: 4,
-            doors: 4,
-            bags: 4,
-            transmission: "auto"
-          },
-          {
-            id: "eff51c2e-e8e7-4707-a81e-2e8c2525e41b",
-            type: "sport",
-            name: "Ferrari F12 Car 2022",
-            image: "/images/perfect-fleet-img-3.png",
-            price_per_day: "450",
-            passengers: 2,
-            doors: 2,
-            bags: 2,
-            transmission: "auto"
-          },
-          {
-            id: "87f4818c-233c-46af-b15d-6d9899c9c321",
-            type: "sedan",
-            name: "Toyota Yaris 2017",
-            image: "/images/perfect-fleet-img-4.png",
-            price_per_day: "220",
-            passengers: 4,
-            doors: 4,
-            bags: 2,
-            transmission: "auto"
-          }
-        ]);
+        setFleets(SEED_FLEET);
       }
       setLoading(false);
     }
@@ -118,70 +73,7 @@ export default function PerfectFleets() {
                 >
                   {fleets.map((fleet, idx) => (
                     <SwiperSlide key={fleet.id || idx} className="swiper-slide">
-                      {/* Perfect Fleets Item Start */}
-                      <div className="perfect-fleet-item">
-                        {/* Image Box Start */}
-                        <div className="image-box">
-                          <img src={fleet.image} alt={fleet.name} />
-                        </div>
-                        {/* Image Box End */}
-
-                        {/* Perfect Fleets Content Start */}
-                        <div className="perfect-fleet-content">
-                          {/* Perfect Fleets Title Start */}
-                          <div className="perfect-fleet-title">
-                            <h3 style={{ textTransform: "capitalize" }}>{fleet.type} car</h3>
-                            <h2>{fleet.name}</h2>
-                          </div>
-                          {/* Perfect Fleets Content End */}
-
-                          {/* Perfect Fleets Body Start */}
-                          <div className="perfect-fleet-body">
-                            <ul>
-                              <li>
-                                <img src="/images/icon-fleet-list-1.svg" alt="" />
-                                {fleet.passengers} passenger
-                              </li>
-                              <li>
-                                <img src="/images/icon-fleet-list-2.svg" alt="" />
-                                {fleet.doors} door
-                              </li>
-                              <li>
-                                <img src="/images/icon-fleet-list-3.svg" alt="" />
-                                {fleet.bags} bags
-                              </li>
-                              <li>
-                                <img src="/images/icon-fleet-list-4.svg" alt="" />
-                                {fleet.transmission}
-                              </li>
-                            </ul>
-                          </div>
-                          {/* Perfect Fleets Body End */}
-
-                          {/* Perfect Fleets Footer Start */}
-                          <div className="perfect-fleet-footer">
-                            {/* Perfect Fleets Pricing Start */}
-                            <div className="perfect-fleet-pricing">
-                              <h2>
-                                ${parseFloat(fleet.price_per_day || fleet.price).toFixed(0)}
-                                <span>/day</span>
-                              </h2>
-                            </div>
-                            {/* Perfect Fleets Pricing End */}
-
-                            {/* Perfect Fleets Btn Start */}
-                            <div className="perfect-fleet-btn">
-                              <Link href={fleet.id ? `/cars/${fleet.id}` : "/cars"} className="section-icon-btn">
-                                <img src="/images/arrow-white.svg" alt="Details" />
-                              </Link>
-                            </div>
-                            {/* Perfect Fleets Btn End */}
-                          </div>
-                          {/* Perfect Fleets Footer End */}
-                        </div>
-                        {/* Perfect Fleets Content End */}
-                      </div>
-                      {/* Perfect Fleets Item End */}
+                      <FleetCard car={fleet} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

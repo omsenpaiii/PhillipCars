@@ -4,7 +4,14 @@ import crypto from "crypto";
 import { query } from "@/lib/db";
 import { hashPassword, verifyPassword, createSession, clearSession, getSessionUser } from "@/lib/auth";
 
-export async function signUpAction(prevState: any, formData: FormData) {
+type AuthActionState = { success?: boolean; error?: string } | null;
+
+interface ProfilePasswordRow {
+  id: string;
+  password_hash: string;
+}
+
+export async function signUpAction(_prevState: AuthActionState, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const fullName = formData.get("fullName") as string;
@@ -16,7 +23,7 @@ export async function signUpAction(prevState: any, formData: FormData) {
 
   try {
     // Check if user already exists
-    const userCheck = await query("SELECT id FROM public.profiles WHERE email = $1", [email]);
+    const userCheck = await query<{ id: string }>("SELECT id FROM public.profiles WHERE email = $1", [email]);
     if (userCheck.rows.length > 0) {
       return { error: "An account with this email already exists." };
     }
@@ -31,13 +38,13 @@ export async function signUpAction(prevState: any, formData: FormData) {
 
     await createSession(userId);
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Sign up error:", err);
-    return { error: err.message || "An error occurred during sign up." };
+    return { error: err instanceof Error ? err.message : "An error occurred during sign up." };
   }
 }
 
-export async function signInAction(prevState: any, formData: FormData) {
+export async function signInAction(_prevState: AuthActionState, formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -46,7 +53,7 @@ export async function signInAction(prevState: any, formData: FormData) {
   }
 
   try {
-    const res = await query("SELECT id, password_hash FROM public.profiles WHERE email = $1", [email]);
+    const res = await query<ProfilePasswordRow>("SELECT id, password_hash FROM public.profiles WHERE email = $1", [email]);
     if (res.rows.length === 0) {
       return { error: "Invalid email or password." };
     }
@@ -59,7 +66,7 @@ export async function signInAction(prevState: any, formData: FormData) {
 
     await createSession(user.id);
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Sign in error:", err);
     return { error: "An error occurred during sign in." };
   }

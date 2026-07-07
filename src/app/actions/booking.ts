@@ -2,6 +2,7 @@
 
 import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { getCarByIdAction } from "@/app/actions/cars";
 
 export interface BookingPayload {
   carId: string;
@@ -10,6 +11,26 @@ export interface BookingPayload {
   returnLocation: string;
   returnDate: string;
   type: "rent" | "rent_to_own";
+}
+
+interface BookingRow {
+  id: string;
+}
+
+export interface UserBooking {
+  id: string;
+  user_id: string;
+  car_id: string;
+  pickup_location: string;
+  pickup_date: string | Date;
+  return_location: string;
+  return_date: string | Date;
+  type: "rent" | "rent_to_own";
+  status: string;
+  total_price: string;
+  car_name: string;
+  car_image: string;
+  car_type: string;
 }
 
 export async function createBookingAction(payload: BookingPayload) {
@@ -26,11 +47,11 @@ export async function createBookingAction(payload: BookingPayload) {
 
   try {
     // Fetch car pricing
-    const carRes = await query("SELECT price_per_day, rent_to_own_price, name FROM public.cars WHERE id = $1", [carId]);
-    if (carRes.rows.length === 0) {
+    const carRes = await getCarByIdAction(carId);
+    if (!carRes.success || !carRes.car) {
       return { success: false, error: "Car not found." };
     }
-    const car = carRes.rows[0];
+    const car = carRes.car;
 
     const pick = new Date(pickupDate);
     const ret = new Date(returnDate);
@@ -71,9 +92,9 @@ export async function createBookingAction(payload: BookingPayload) {
     );
 
     return { success: true, bookingId };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Booking error:", err);
-    return { success: false, error: err.message || "An error occurred during booking." };
+    return { success: false, error: err instanceof Error ? err.message : "An error occurred during booking." };
   }
 }
 
@@ -84,7 +105,7 @@ export async function getUserBookingsAction() {
   }
 
   try {
-    const res = await query(
+    const res = await query<UserBooking>(
       `SELECT b.*, c.name as car_name, c.image as car_image, c.type as car_type
        FROM public.bookings b
        JOIN public.cars c ON b.car_id = c.id
@@ -93,7 +114,7 @@ export async function getUserBookingsAction() {
       [user.id]
     );
     return { success: true, bookings: res.rows };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Fetch user bookings error:", err);
     return { success: false, error: "Failed to fetch bookings." };
   }
@@ -106,7 +127,7 @@ export async function cancelBookingAction(bookingId: string) {
   }
 
   try {
-    const res = await query(
+    const res = await query<BookingRow>(
       "UPDATE public.bookings SET status = 'cancelled' WHERE id = $1 AND user_id = $2 RETURNING id",
       [bookingId, user.id]
     );
@@ -114,7 +135,7 @@ export async function cancelBookingAction(bookingId: string) {
       return { success: false, error: "Booking not found or not owned by you." };
     }
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Cancel booking error:", err);
     return { success: false, error: "Failed to cancel booking." };
   }

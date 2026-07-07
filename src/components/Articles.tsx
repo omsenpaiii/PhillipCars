@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export default function Articles() {
   const sideArticles = [
@@ -46,9 +47,9 @@ export default function Articles() {
               {/* Highlighted Article Featured Image Start */}
               <div className="highlighted-article-featured-img">
                 <figure>
-                  <a href="#" className="image-anime" data-cursor-text="View">
+                  <Link href="/cars" className="image-anime" data-cursor-text="View">
                     <img src="/images/post-1.jpg" alt="Featured Article" />
-                  </a>
+                  </Link>
                 </figure>
               </div>
               {/* Highlighted Article Featured Image End */}
@@ -59,9 +60,9 @@ export default function Articles() {
                 <div className="article-meta">
                   <ul>
                     <li>
-                      <a href="#">
+                      <Link href="/cars">
                         <i className="fa-solid fa-calendar-days"></i> sep 19, 2024
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -70,11 +71,11 @@ export default function Articles() {
                 {/* Highlighted Article Content Start */}
                 <div className="highlighted-article-content">
                   <h3>
-                    <a href="#">Road Trip Essentials: What to Pack for a Smooth Journey</a>
+                    <Link href="/cars">Road Trip Essentials: What to Pack for a Smooth Journey</Link>
                   </h3>
-                  <a href="#" className="section-icon-btn">
+                  <Link href="/cars" className="section-icon-btn" data-cursor-text="Read">
                     <img src="/images/arrow-white.svg" alt="Arrow" />
-                  </a>
+                  </Link>
                 </div>
                 {/* Highlighted Article Content End */}
               </div>
@@ -90,9 +91,9 @@ export default function Articles() {
               <div key={idx} className="article-post wow fadeInUp" data-wow-delay={art.delay}>
                 <div className="article-featured-img">
                   <figure>
-                    <a href="#" className="image-anime" data-cursor-text="View">
+                    <Link href="/cars" className="image-anime" data-cursor-text="View">
                       <img src={art.image} alt={art.title} />
-                    </a>
+                    </Link>
                   </figure>
                 </div>
 
@@ -101,9 +102,9 @@ export default function Articles() {
                   <div className="article-meta">
                     <ul>
                       <li>
-                        <a href="#">
+                        <Link href="/cars">
                           <i className="fa-solid fa-calendar-days"></i> {art.date}
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -111,11 +112,11 @@ export default function Articles() {
 
                   <div className="article-post-content">
                     <h3>
-                      <a href="#">{art.title}</a>
+                      <Link href="/cars">{art.title}</Link>
                     </h3>
-                    <a href="#" className="read-story-btn">
+                    <Link href="/cars" className="read-story-btn">
                       read story
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>

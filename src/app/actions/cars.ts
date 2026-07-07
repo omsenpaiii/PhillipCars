@@ -1,6 +1,13 @@
 "use server";
 
 import { query } from "@/lib/db";
+import {
+  filterFleetCars,
+  findSeedCarById,
+  mergeFleetCars,
+  normalizeFleetCar,
+  type FleetCar,
+} from "@/lib/fleet-data";
 
 export interface CarFilters {
   type?: string;
@@ -11,55 +18,33 @@ export interface CarFilters {
 
 export async function getCarsAction(filters?: CarFilters) {
   try {
-    let sql = "SELECT * FROM public.cars WHERE status = 'available'";
-    const params: any[] = [];
-    let paramCount = 1;
-
-    if (filters) {
-      if (filters.type && filters.type !== "all") {
-        sql += ` AND type = $${paramCount}`;
-        params.push(filters.type);
-        paramCount++;
-      }
-
-      if (filters.transmission && filters.transmission !== "all") {
-        sql += ` AND transmission = $${paramCount}`;
-        params.push(filters.transmission);
-        paramCount++;
-      }
-
-      if (filters.maxPrice) {
-        sql += ` AND price_per_day <= $${paramCount}`;
-        params.push(filters.maxPrice);
-        paramCount++;
-      }
-
-      if (filters.search) {
-        sql += ` AND (name ILIKE $${paramCount} OR type ILIKE $${paramCount})`;
-        params.push(`%${filters.search}%`);
-        paramCount++;
-      }
-    }
-
-    sql += " ORDER BY price_per_day ASC";
-    
-    const res = await query(sql, params);
-    return { success: true, cars: res.rows };
-  } catch (err: any) {
+    const res = await query<FleetCar>("SELECT * FROM public.cars WHERE status = 'available' ORDER BY price_per_day ASC");
+    return { success: true, cars: filterFleetCars(mergeFleetCars(res.rows), filters) };
+  } catch (err: unknown) {
     console.error("Error fetching cars:", err);
-    return { success: false, error: err.message || "Failed to fetch cars." };
+    return { success: true, cars: filterFleetCars(mergeFleetCars([]), filters) };
   }
 }
 
 export async function getCarByIdAction(id: string) {
   try {
-    const res = await query("SELECT * FROM public.cars WHERE id = $1", [id]);
-    if (res.rows.length === 0) {
-      return { success: false, error: "Car not found." };
+    const res = await query<FleetCar>("SELECT * FROM public.cars WHERE id = $1", [id]);
+    if (res.rows.length > 0) {
+      return { success: true, car: normalizeFleetCar(res.rows[0]) };
     }
-    return { success: true, car: res.rows[0] };
-  } catch (err: any) {
+
+    const seedCar = findSeedCarById(id);
+    if (seedCar) {
+      return { success: true, car: seedCar };
+    }
+
+    return { success: false, error: "Car not found." };
+  } catch (err: unknown) {
     console.error("Error fetching car by ID:", err);
+    const seedCar = findSeedCarById(id);
+    if (seedCar) {
+      return { success: true, car: seedCar };
+    }
     return { success: false, error: "Failed to fetch car details." };
   }
 }
@@ -108,9 +93,8 @@ export async function listCarAction(formData: FormData) {
     );
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error listing car:", err);
-    return { success: false, error: err.message || "Failed to submit car listing." };
+    return { success: false, error: err instanceof Error ? err.message : "Failed to submit car listing." };
   }
 }
-

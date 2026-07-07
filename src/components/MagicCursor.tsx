@@ -20,15 +20,16 @@ export default function MagicCursor() {
 
   useEffect(() => {
     const isCoarse = window.matchMedia("(pointer: coarse)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const timer = setTimeout(() => {
       setMounted(true);
-      if (isCoarse) {
+      if (isCoarse || prefersReducedMotion) {
         setDisabled(true);
       }
     }, 0);
 
-    if (isCoarse) {
+    if (isCoarse || prefersReducedMotion) {
       return () => clearTimeout(timer);
     }
 
@@ -57,20 +58,11 @@ export default function MagicCursor() {
 
     animationFrameId = requestAnimationFrame(updatePosition);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      mouseCoords.current = { x: e.clientX, y: e.clientY };
-
-      // Set visibility to true on first movement
-      if (!hasMovedRef.current) {
-        hasMovedRef.current = true;
-        setVisible(true);
-      }
-
-      const target = e.target as HTMLElement;
-      if (!target) return;
+    const updateHoverState = (eventTarget: EventTarget | null) => {
+      const target = eventTarget instanceof HTMLElement ? eventTarget : null;
 
       // Find closest element with either attribute to determine precedence
-      const closestEl = target.closest("[data-cursor], [data-cursor-text]");
+      const closestEl = target?.closest("[data-cursor], [data-cursor-text]");
       let newText = "";
       let newOpaque = false;
 
@@ -93,12 +85,39 @@ export default function MagicCursor() {
       }
     };
 
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseCoords.current = { x: e.clientX, y: e.clientY };
+
+      // Set visibility to true on first movement
+      if (!hasMovedRef.current) {
+        hasMovedRef.current = true;
+        setVisible(true);
+      }
+
+      updateHoverState(e.target);
+    };
+
+    const handlePointerOver = (e: PointerEvent) => {
+      updateHoverState(e.target);
+    };
+
+    const handlePointerOut = (e: PointerEvent) => {
+      const nextTarget = e.relatedTarget instanceof HTMLElement ? e.relatedTarget : null;
+      if (!nextTarget?.closest("[data-cursor], [data-cursor-text]")) {
+        updateHoverState(null);
+      }
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("pointerover", handlePointerOver);
+    window.addEventListener("pointerout", handlePointerOut);
 
     return () => {
       clearTimeout(timer);
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("pointerover", handlePointerOver);
+      window.removeEventListener("pointerout", handlePointerOut);
     };
   }, []);
 

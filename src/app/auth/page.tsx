@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signInAction, signUpAction } from "../actions/auth";
 import Header from "@/components/Header";
@@ -8,20 +8,16 @@ import Footer from "@/components/Footer";
 import { ScaleIn } from "@/components/Motion";
 
 function AuthFormContent() {
+  const searchParams = useSearchParams();
+  const isRegistered = searchParams.get("registered") === "true";
   const [tab, setTab] = useState<"login" | "signup">("login");
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(
+    isRegistered ? "Account created successfully! Please login." : null
+  );
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") || "/dashboard";
-
-  useEffect(() => {
-    if (searchParams.get("registered") === "true") {
-      setSuccess("Account created successfully! Please login.");
-      setTab("login");
-    }
-  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,7 +51,7 @@ function AuthFormContent() {
           }, 1000);
         }
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);

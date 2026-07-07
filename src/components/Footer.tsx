@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -21,10 +23,7 @@ export default function Footer() {
             <div className="about-footer">
               {/* Footer Logo Start */}
               <div className="footer-logo">
-                <div style={{ display: "inline-flex", alignItems: "center", textDecoration: "none", marginBottom: "15px" }}>
-                  <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "var(--accent-color)", textTransform: "uppercase", letterSpacing: "-1.5px" }}>PHILLIP</span>
-                  <span style={{ fontFamily: "var(--font-epilogue)", fontWeight: 900, fontSize: "28px", color: "#ffffff", textTransform: "uppercase", letterSpacing: "-1.5px" }}>CARS</span>
-                </div>
+                <BrandLogo variant="light" />
               </div>
               {/* Footer Logo End */}
 
@@ -43,16 +42,16 @@ export default function Footer() {
               <h3>legal policy</h3>
               <ul>
                 <li>
-                  <a href="#">term & condition</a>
+                  <button type="button" className="footer-text-button">term & condition</button>
                 </li>
                 <li>
-                  <a href="#">privacy policy</a>
+                  <button type="button" className="footer-text-button">privacy policy</button>
                 </li>
                 <li>
-                  <a href="#">legal notice</a>
+                  <button type="button" className="footer-text-button">legal notice</button>
                 </li>
                 <li>
-                  <a href="#">accessibility</a>
+                  <button type="button" className="footer-text-button">accessibility</button>
                 </li>
               </ul>
             </div>
@@ -65,16 +64,19 @@ export default function Footer() {
               <h3>quick links</h3>
               <ul>
                 <li>
-                  <a href="#">home</a>
+                  <Link href="/">home</Link>
                 </li>
                 <li>
-                  <a href="#about">about us</a>
+                  <Link href="/#about">about us</Link>
                 </li>
                 <li>
-                  <a href="#fleets">cars</a>
+                  <Link href="/cars">cars</Link>
                 </li>
                 <li>
-                  <a href="#services">services</a>
+                  <Link href="/#services">services</Link>
+                </li>
+                <li>
+                  <Link href="/#contact">contact us</Link>
                 </li>
               </ul>
             </div>
@@ -136,27 +138,27 @@ export default function Footer() {
               <div className="footer-social-links">
                 <ul>
                   <li>
-                    <a href="#" aria-label="YouTube">
+                    <a href="https://www.youtube.com/" aria-label="YouTube" target="_blank" rel="noreferrer">
                       <i className="fa-brands fa-youtube"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#" aria-label="Facebook">
+                    <a href="https://www.facebook.com/" aria-label="Facebook" target="_blank" rel="noreferrer">
                       <i className="fa-brands fa-facebook-f"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#" aria-label="Twitter">
+                    <a href="https://x.com/" aria-label="Twitter" target="_blank" rel="noreferrer">
                       <i className="fa-brands fa-x-twitter"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#" aria-label="Instagram">
+                    <a href="https://www.instagram.com/" aria-label="Instagram" target="_blank" rel="noreferrer">
                       <i className="fa-brands fa-instagram"></i>
                     </a>
                   </li>
                   <li>
-                    <a href="#" aria-label="LinkedIn">
+                    <a href="https://www.linkedin.com/" aria-label="LinkedIn" target="_blank" rel="noreferrer">
                       <i className="fa-brands fa-linkedin-in"></i>
                     </a>
                   </li>

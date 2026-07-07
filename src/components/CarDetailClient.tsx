@@ -1,24 +1,36 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBookingAction } from "@/app/actions/booking";
 import { FadeIn, SlideIn } from "./Motion";
 import Link from "next/link";
+import type { FleetCar } from "@/lib/fleet-data";
+import type { SessionUser } from "@/lib/auth";
 
 interface CarDetailClientProps {
-  car: any;
-  user: any;
+  car: FleetCar;
+  user: SessionUser | null;
+}
+
+function getDefaultBookingDates() {
+  const today = new Date();
+  const returnDate = new Date();
+  returnDate.setDate(today.getDate() + 2);
+
+  return {
+    pickup: today.toISOString().split("T")[0],
+    returnDate: returnDate.toISOString().split("T")[0],
+  };
 }
 
 export default function CarDetailClient({ car, user }: CarDetailClientProps) {
+  const defaultDates = useMemo(() => getDefaultBookingDates(), []);
   const [bookingType, setBookingType] = useState<"rent" | "rent_to_own">("rent");
   const [pickupLoc, setPickupLoc] = useState("dubai");
   const [returnLoc, setReturnLoc] = useState("dubai");
-  const [pickupDate, setPickupDate] = useState("");
-  const [returnDate, setReturnDate] = useState("");
-  const [days, setDays] = useState(1);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [pickupDate, setPickupDate] = useState(defaultDates.pickup);
+  const [returnDate, setReturnDate] = useState(defaultDates.returnDate);
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,41 +38,27 @@ export default function CarDetailClient({ car, user }: CarDetailClientProps) {
   
   const router = useRouter();
 
-  // Set default dates
-  useEffect(() => {
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 2); // default 2 days booking
-
-    setPickupDate(today.toISOString().split("T")[0]);
-    setReturnDate(tomorrow.toISOString().split("T")[0]);
-  }, []);
-
-  // Calculate price whenever dates or booking type change
-  useEffect(() => {
-    if (!pickupDate || !returnDate) return;
+  const { days, totalPrice } = useMemo(() => {
+    if (!pickupDate || !returnDate) return { days: 0, totalPrice: 0 };
 
     const pick = new Date(pickupDate);
     const ret = new Date(returnDate);
 
     if (ret <= pick) {
-      setDays(0);
-      setTotalPrice(0);
-      return;
+      return { days: 0, totalPrice: 0 };
     }
 
     const diffTime = Math.abs(ret.getTime() - pick.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 1;
-    setDays(diffDays);
 
     if (bookingType === "rent") {
-      setTotalPrice(diffDays * parseFloat(car.price_per_day));
-    } else {
-      // Rent-to-Own: proportional daily cost based on monthly rate
-      const dailyRate = parseFloat(car.rent_to_own_price) / 30;
-      setTotalPrice(diffDays * dailyRate);
+      return { days: diffDays, totalPrice: diffDays * parseFloat(car.price_per_day) };
     }
-  }, [pickupDate, returnDate, bookingType, car]);
+
+    // Rent-to-Own: proportional daily cost based on monthly rate
+    const dailyRate = parseFloat(car.rent_to_own_price) / 30;
+    return { days: diffDays, totalPrice: diffDays * dailyRate };
+  }, [pickupDate, returnDate, bookingType, car.price_per_day, car.rent_to_own_price]);
 
   const handleBook = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,7 +91,7 @@ export default function CarDetailClient({ car, user }: CarDetailClientProps) {
           router.refresh();
         }, 1500);
       }
-    } catch (err) {
+    } catch {
       setError("Failed to complete booking. Please try again.");
     } finally {
       setLoading(false);

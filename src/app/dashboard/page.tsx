@@ -3,15 +3,16 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signOutAction, getCurrentUserAction } from "../actions/auth";
-import { getUserBookingsAction, cancelBookingAction } from "../actions/booking";
+import { getUserBookingsAction, cancelBookingAction, type UserBooking } from "../actions/booking";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FadeIn, FadeInStagger, FadeInStaggerItem } from "@/components/Motion";
 import Link from "next/link";
+import type { SessionUser } from "@/lib/auth";
 
 export default function DashboardPage() {
-  const [user, setUser] = useState<any>(null);
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [user, setUser] = useState<SessionUser | null>(null);
+  const [bookings, setBookings] = useState<UserBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -71,6 +72,10 @@ export default function DashboardPage() {
         </div>
       </div>
     );
+  }
+
+  if (!user) {
+    return null;
   }
 
   return (

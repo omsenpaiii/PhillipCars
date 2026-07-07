@@ -1,4 +1,4 @@
-import { Pool } from 'pg';
+import { Pool, type QueryResult, type QueryResultRow } from "pg";
 
 let pool: Pool;
 
@@ -8,20 +8,21 @@ if (process.env.NODE_ENV === 'production') {
   });
 } else {
   // Prevent multiple pools in development due to hot reloading
-  if (!(global as any)._postgresPool) {
-    (global as any)._postgresPool = new Pool({
+  const globalForPostgres = globalThis as typeof globalThis & { _postgresPool?: Pool };
+  if (!globalForPostgres._postgresPool) {
+    globalForPostgres._postgresPool = new Pool({
       connectionString: process.env.DATABASE_URL,
     });
   }
-  pool = (global as any)._postgresPool;
+  pool = globalForPostgres._postgresPool;
 }
 
-export async function query(text: string, params?: any[]) {
-  const start = Date.now();
-  const res = await pool.query(text, params);
-  const duration = Date.now() - start;
-  // console.log('executed query', { text, duration, rows: res.rowCount });
-  return res;
+export async function query<T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: unknown[]
+): Promise<QueryResult<T>> {
+  const res = params ? await pool.query(text, params) : await pool.query(text);
+  return res as QueryResult<T>;
 }
 
 export default pool;

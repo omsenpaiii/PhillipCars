@@ -5,8 +5,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCarsAction, CarFilters } from "../actions/cars";
 import { FadeIn, FadeInStagger, FadeInStaggerItem } from "@/components/Motion";
-import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import FleetCard from "@/components/FleetCard";
+import type { FleetCar } from "@/lib/fleet-data";
+import { useSearchParams } from "next/navigation";
 
 function CarSkeleton() {
   return (
@@ -49,31 +50,15 @@ function CarSkeleton() {
   );
 }
 
-interface Car {
-  id: string;
-  name: string;
-  type: string;
-  image: string;
-  price_per_day: string;
-  rent_to_own_price: string;
-  doors: number;
-  passengers: number;
-  bags: number;
-  transmission: string;
-  status: string;
-  features?: string[];
-  host_id?: string;
-}
-
 function CarsContent() {
   const [mounted, setMounted] = useState(false);
-  const [cars, setCars] = useState<Car[]>([]);
+  const [cars, setCars] = useState<FleetCar[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasFetched, setHasFetched] = useState(false);
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   const [search, setSearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [type, setType] = useState("all");
   const [transmission, setTransmission] = useState("all");
   const [maxPrice, setMaxPrice] = useState(500);
@@ -84,23 +69,23 @@ function CarsContent() {
       type,
       transmission,
       maxPrice,
-      search: search || undefined,
+      search: searchQuery || undefined,
     };
     const res = await getCarsAction(filters);
     if (res.success && res.cars) {
-      setCars(res.cars as Car[]);
+      setCars(res.cars);
+    } else {
+      setCars([]);
     }
     setLoading(false);
     setHasFetched(true);
-  }, [type, transmission, maxPrice, search]);
+  }, [type, transmission, maxPrice, searchQuery]);
 
   useEffect(() => {
     const typeParam = searchParams.get("type");
     const timer = setTimeout(() => {
       setMounted(true);
-      if (typeParam) {
-        setType(typeParam);
-      }
+      setType(typeParam || "all");
     }, 0);
     return () => clearTimeout(timer);
   }, [searchParams]);
@@ -116,7 +101,7 @@ function CarsContent() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchCars();
+    setSearchQuery(search);
   };
 
   return (
@@ -238,60 +223,8 @@ function CarsContent() {
             <FadeInStagger className="row">
               {cars.map((car) => (
                 <div key={car.id} className="col-md-6 mb-4">
-                  <FadeInStaggerItem className="perfect-fleet-item" style={{ height: "100%" }}>
-                    {/* Image Box */}
-                    <div className="image-box">
-                      <img src={car.image} alt={car.name} style={{ width: "100%", height: "auto" }} />
-                    </div>
-
-                    {/* Content */}
-                    <div className="perfect-fleet-content">
-                      <div className="perfect-fleet-title">
-                        <h3 style={{ textTransform: "capitalize" }}>{car.type} car</h3>
-                        <h2>{car.name}</h2>
-                      </div>
-
-                      {/* Specs */}
-                      <div className="perfect-fleet-body">
-                        <ul>
-                          <li>
-                            <img src="/images/icon-fleet-list-1.svg" alt="" />
-                            {car.passengers} passenger
-                          </li>
-                          <li>
-                            <img src="/images/icon-fleet-list-2.svg" alt="" />
-                            {car.doors} door
-                          </li>
-                          <li>
-                            <img src="/images/icon-fleet-list-3.svg" alt="" />
-                            {car.bags} bags
-                          </li>
-                          <li>
-                            <img src="/images/icon-fleet-list-4.svg" alt="" />
-                            {car.transmission}
-                          </li>
-                        </ul>
-                      </div>
-
-                      {/* Footer / Booking Actions */}
-                      <div className="perfect-fleet-footer">
-                        <div className="perfect-fleet-pricing">
-                          <h2>
-                            ${parseFloat(car.price_per_day).toFixed(0)}
-                            <span>/day</span>
-                          </h2>
-                          <p style={{ fontSize: "12px", color: "var(--text-color)", margin: 0 }}>
-                            Rent-to-Own: ${parseFloat(car.rent_to_own_price).toFixed(0)}/mo
-                          </p>
-                        </div>
-
-                        <div className="perfect-fleet-btn">
-                          <Link href={`/cars/${car.id}`} className="section-icon-btn">
-                            <img src="/images/arrow-white.svg" alt="Rent now" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
+                  <FadeInStaggerItem style={{ height: "100%" }}>
+                    <FleetCard car={car} showRentToOwn />
                   </FadeInStaggerItem>
                 </div>
               ))}
@@ -312,8 +245,8 @@ export default function CarsPage() {
       <div 
         className="page-header bg-section" 
         style={{
-          marginTop: "120px",
-          padding: "60px 0",
+          marginTop: "96px",
+          padding: "54px 0",
           backgroundImage: "url('/images/page-header-bg.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",

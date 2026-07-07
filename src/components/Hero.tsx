@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FadeIn, ScaleIn } from "./Motion";
+import Link from "next/link";
 
 export default function Hero() {
   const [carType, setCarType] = useState("");
@@ -46,12 +47,12 @@ export default function Hero() {
                 </div>
 
                 <FadeIn delay={0.55} className="hero-content-body wow fadeInUp">
-                  <a href="/cars" className="btn-default">
+                  <Link href="/cars" className="btn-default">
                     book a rental
-                  </a>
-                  <a href="#about" className="btn-default btn-highlighted">
+                  </Link>
+                  <Link href="/#about" className="btn-default btn-highlighted">
                     learn more
-                  </a>
+                  </Link>
                 </FadeIn>
               </div>
               {/* Hero Content End */}
