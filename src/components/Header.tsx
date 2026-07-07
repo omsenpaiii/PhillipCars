@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { getCurrentUserAction, signOutAction } from "@/app/actions/auth";
 
 export default function Header() {
@@ -9,6 +10,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     // Check if user is logged in
@@ -61,17 +63,17 @@ export default function Header() {
               <div className="nav-menu-wrapper">
                 <ul className="navbar-nav mr-auto" id="menu">
                   <li className="nav-item">
-                    <Link className="nav-link" href="/">
+                    <Link className="nav-link" href="/" style={pathname === "/" ? { color: "var(--accent-color)" } : undefined}>
                       Home
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" href="/cars">
+                    <Link className="nav-link" href="/cars" style={pathname === "/cars" ? { color: "var(--accent-color)" } : undefined}>
                       Our Fleets
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" href="/list-car" style={{ color: "var(--accent-color)" }}>
+                    <Link className="nav-link" href="/list-car" style={pathname === "/list-car" ? { color: "var(--accent-color)" } : undefined}>
                       List Your Car
                     </Link>
                   </li>
@@ -92,7 +94,7 @@ export default function Header() {
                   </li>
                   {user && (
                     <li className="nav-item">
-                      <Link className="nav-link" href="/dashboard" style={{ fontWeight: 600 }}>
+                      <Link className="nav-link" href="/dashboard" style={pathname === "/dashboard" ? { color: "var(--accent-color)" } : undefined}>
                         My Dashboard
                       </Link>
                     </li>

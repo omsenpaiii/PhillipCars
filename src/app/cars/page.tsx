@@ -52,6 +52,7 @@ function CarSkeleton() {
 function CarsContent() {
   const [cars, setCars] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -77,6 +78,7 @@ function CarsContent() {
       setCars(res.cars);
     }
     setLoading(false);
+    setHasFetched(true);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -193,7 +195,7 @@ function CarsContent() {
                 </div>
               ))}
             </div>
-          ) : cars.length === 0 ? (
+          ) : (cars.length === 0 && hasFetched) ? (
             <div className="text-center" style={{ padding: "100px 0" }}>
               <i className="fa-solid fa-car-rear mb-3" style={{ fontSize: "48px", color: "#ccc" }}></i>
               <h3>No Cars Found</h3>

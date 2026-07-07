@@ -18,8 +18,6 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [ballPos, setBallPos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     // Dismiss preloader after components mount
@@ -27,38 +25,10 @@ export default function Home() {
       setLoading(false);
     }, 1000);
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
     return () => {
       clearTimeout(timer);
-      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
-
-  // Smooth cursor ball animation
-  useEffect(() => {
-    if (loading) return;
-    
-    let animationFrameId: number;
-    const updateBall = () => {
-      setBallPos((prev) => {
-        const dx = mousePos.x - prev.x;
-        const dy = mousePos.y - prev.y;
-        return {
-          x: prev.x + dx * 0.15,
-          y: prev.y + dy * 0.15,
-        };
-      });
-      animationFrameId = requestAnimationFrame(updateBall);
-    };
-
-    animationFrameId = requestAnimationFrame(updateBall);
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [mousePos, loading]);
 
   return (
     <>
@@ -78,21 +48,6 @@ export default function Home() {
       {/* Main Layout */}
       {!loading && (
         <div className="relative min-h-screen">
-          {/* Custom Magic Mouse Cursor */}
-          <div id="magic-cursor">
-            <div
-              id="ball"
-              style={{
-                left: `${ballPos.x}px`,
-                top: `${ballPos.y}px`,
-                position: "fixed",
-                zIndex: 999999,
-                transform: "translate(-50%, -50%)",
-                pointerEvents: "none",
-              }}
-            ></div>
-          </div>
-
           <Header />
           <main>
             <Hero />

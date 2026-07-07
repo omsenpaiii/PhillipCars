@@ -84,11 +84,11 @@ export default function Footer() {
           <div className="col-lg-3 col-md-4">
             {/* Footer Newsletter Start */}
             <div className="footer-newsletter">
-              <h3>Subscribe to the Newsleeters</h3>
+              <h3>Subscribe to our Newsletter</h3>
               {/* Footer Newsletter Form Start */}
               <div className="footer-newsletter-form">
                 <form id="newslettersForm" onSubmit={handleSubscribe}>
-                  <div className="form-group" style={{ position: "relative" }}>
+                  <div className="form-group">
                     <input
                       type="email"
                       name="email"
@@ -98,15 +98,12 @@ export default function Footer() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      style={{ background: "#fff", borderRadius: "100px", paddingRight: "55px" }}
+                      style={{ paddingRight: "55px" }}
                     />
                     <button
                       type="submit"
                       className="section-icon-btn"
                       style={{
-                        position: "absolute",
-                        right: "0px",
-                        top: "0px",
                         border: "none",
                         cursor: "pointer",
                       }}

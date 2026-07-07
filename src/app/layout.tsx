@@ -22,6 +22,8 @@ export const metadata: Metadata = {
   }
 };
 
+import MagicCursor from "@/components/MagicCursor";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,6 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} ${epilogue.variable}`}>
       <body>
+        <MagicCursor />
         {children}
       </body>
     </html>
