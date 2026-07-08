@@ -6673,3 +6673,20 @@ header.main-header .header-sticky.active{
 		font-size: 28px;
 	}
 }
+
+/* Date Picker Webkit Overrides for Mobile/Desktop Touch */
+.date-input-field {
+	position: relative;
+}
+.date-input-field::-webkit-calendar-picker-indicator {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: auto;
+	height: auto;
+	color: transparent;
+	background: transparent;
+	cursor: pointer;
+}

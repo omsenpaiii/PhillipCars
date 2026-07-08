@@ -121,25 +121,28 @@ export default function Hero() {
                     {/* Rent Details Item End */}
 
                     {/* Rent Details Item Start */}
-                    <div className="rent-details-item">
+                    <div className="rent-details-item" style={{ position: "relative" }}>
                       <div className="icon-box">
                         <img src="/images/icon-rent-details-3.svg" alt="Pickup Date" />
                       </div>
-                      <div className="rent-details-content">
+                      <div className="rent-details-content" style={{ width: "100%" }}>
                         <h3>pickup date</h3>
                         <input
-                          type="text"
+                          type="date"
                           name="date"
-                          placeholder="mm/dd/yyyy"
-                          className="rent-details-form"
+                          className="rent-details-form date-input-field"
                           value={pickupDate}
                           onChange={(e) => setPickupDate(e.target.value)}
-                          onFocus={(e) => (e.target.type = "date")}
-                          onBlur={(e) => {
-                            if (!e.target.value) e.target.type = "text";
-                          }}
                           required
-                          style={{ background: "transparent", border: "none", color: "#616161", outline: "none", width: "100%" }}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#616161",
+                            outline: "none",
+                            width: "100%",
+                            cursor: "pointer",
+                            minHeight: "24px"
+                          }}
                         />
                       </div>
                     </div>
@@ -170,38 +173,63 @@ export default function Hero() {
                     {/* Rent Details Item End */}
 
                     {/* Rent Details Item Start */}
-                    <div className="rent-details-item">
+                    <div className="rent-details-item" style={{ position: "relative" }}>
                       <div className="icon-box">
                         <img src="/images/icon-rent-details-5.svg" alt="Return Date" />
                       </div>
-                      <div className="rent-details-content">
+                      <div className="rent-details-content" style={{ width: "100%" }}>
                         <h3>Return Date</h3>
                         <input
-                          type="text"
+                          type="date"
                           name="date"
-                          placeholder="mm/dd/yyyy"
-                          className="rent-details-form"
+                          className="rent-details-form date-input-field"
                           value={returnDate}
                           onChange={(e) => setReturnDate(e.target.value)}
-                          onFocus={(e) => (e.target.type = "date")}
-                          onBlur={(e) => {
-                            if (!e.target.value) e.target.type = "text";
-                          }}
                           required
-                          style={{ background: "transparent", border: "none", color: "#616161", outline: "none", width: "100%" }}
+                          style={{
+                            background: "transparent",
+                            border: "none",
+                            color: "#616161",
+                            outline: "none",
+                            width: "100%",
+                            cursor: "pointer",
+                            minHeight: "24px"
+                          }}
                         />
                       </div>
                     </div>
                     {/* Rent Details Item End */}
 
-                    <button
-                      type="submit"
-                      className="rent-details-item rent-details-search"
-                      style={{ border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
-                      aria-label="Search"
-                    >
-                      <i className="fa-solid fa-magnifying-glass" style={{ color: "#fff" }}></i>
-                    </button>
+                    <div className="rent-details-item rent-details-search" style={{ border: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <button
+                        type="submit"
+                        style={{
+                          background: "var(--accent-color)",
+                          border: "none",
+                          borderRadius: "50%",
+                          width: "50px",
+                          height: "50px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease-in-out",
+                          margin: "0 auto",
+                          outline: "none",
+                          padding: 0
+                        }}
+                        className="search-btn-hero"
+                        aria-label="Search"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = "var(--primary-color)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = "var(--accent-color)";
+                        }}
+                      >
+                        <i className="fa-solid fa-magnifying-glass" style={{ color: "#fff", fontSize: "20px" }}></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
