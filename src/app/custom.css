@@ -2618,6 +2618,10 @@ header.main-header .header-sticky.active{
 	padding: 140px 0;
 }
 
+.fleet-page-header{
+	margin-top: -88px;
+}
+
 .page-header > .container{
 	position: relative;
 	z-index: 2;
@@ -5385,6 +5389,10 @@ header.main-header .header-sticky.active{
 
 	.page-header{
 		padding: 100px 0;
+	}
+
+	.fleet-page-header{
+		margin-top: 0;
 	}
 
 	.page-header-box h1{

@@ -243,7 +243,7 @@ export default function CarsPage() {
       
       {/* Page Header */}
       <div 
-        className="page-header bg-section" 
+        className="page-header bg-section fleet-page-header" 
         style={{
           padding: "54px 0",
           backgroundImage: "url('/images/page-header-bg.jpg')",
