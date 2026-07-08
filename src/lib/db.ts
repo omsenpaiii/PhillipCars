@@ -5,6 +5,9 @@ let pool: Pool;
 if (process.env.NODE_ENV === 'production') {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    max: 2, // limit connection pool size in serverless environments
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 4000,
   });
 } else {
   // Prevent multiple pools in development due to hot reloading
