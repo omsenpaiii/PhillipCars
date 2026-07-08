@@ -1,10 +1,35 @@
-import { Pool, type QueryResult, type QueryResultRow } from "pg";
+import { Pool, type PoolConfig, type QueryResult, type QueryResultRow } from "pg";
 
 let pool: Pool;
 
+function getPoolConfig(): PoolConfig {
+  const connectionString = process.env.DATABASE_URL;
+
+  if (!connectionString) {
+    return { connectionString };
+  }
+
+  const databaseUrl = new URL(connectionString);
+  const isSupabasePooler = databaseUrl.hostname.endsWith(".pooler.supabase.com");
+
+  if (!isSupabasePooler) {
+    return { connectionString };
+  }
+
+  databaseUrl.searchParams.delete("sslmode");
+  databaseUrl.searchParams.delete("sslcert");
+  databaseUrl.searchParams.delete("sslkey");
+  databaseUrl.searchParams.delete("sslrootcert");
+
+  return {
+    connectionString: databaseUrl.toString(),
+    ssl: { rejectUnauthorized: false },
+  };
+}
+
 if (process.env.NODE_ENV === 'production') {
   pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    ...getPoolConfig(),
     max: 2, // limit connection pool size in serverless environments
     idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 4000,
@@ -14,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
   const globalForPostgres = globalThis as typeof globalThis & { _postgresPool?: Pool };
   if (!globalForPostgres._postgresPool) {
     globalForPostgres._postgresPool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      ...getPoolConfig(),
     });
   }
   pool = globalForPostgres._postgresPool;
