@@ -13,7 +13,7 @@
 | 2 | M1: Custom Cursor | Verify/fix custom cursor interactions (`data-cursor-text`, `data-cursor`). | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
 | 3 | M2: Footer Align/Spell | Fix newsletter email input frame alignment and spelling 'Newsleeters'. | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
 | 4 | M3: Fleet Hydration | Immediate rendering of loading skeletons for `/cars` list dynamic hydration. | None | DONE | ec1b81be-96b4-452d-b8be-c67f4ee8dea2 |
-| 5 | E2E & Production Build | Run production build verification and integrity audit. | M1, M2, M3 | IN_PROGRESS | e20804cd-abd1-44c8-be65-70a5261dfe09 |
+| 5 | E2E & Production Build | Run production build verification and integrity audit. | M1, M2, M3 | DONE | f1f632fa-2453-422d-96d5-b508e24906f8 |
 
 ## Interface Contracts
 - Newsletter button remains nested properly within its wrapper/input frame.

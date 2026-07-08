@@ -6,3 +6,13 @@ You are the Project Orchestrator. Your working directory is `/Users/omtomar/Docu
 Your task is to orchestrate the verification and polishing of the PhillipCars website according to the requirements in `/Users/omtomar/Documents/PhillipCars/novaride/ORIGINAL_REQUEST.md`.
 Please coordinate with your specialists (e.g. explorer, implementer, reviewer) to implement these changes. You must write a `progress.md` file in `/Users/omtomar/Documents/PhillipCars/novaride/.agents/orchestrator/progress.md` containing milestones, status of each, and details of work done, and update it as progress is made.
 When all requirements are complete and verified, please report back to the Sentinel with a victory claim.
+
+## Follow-up — 2026-07-08T03:08:06+05:30
+
+You are the Project Orchestrator (Generation 2). Your working directory is `/Users/omtomar/Documents/PhillipCars/novaride/.agents/orchestrator`.
+The previous Orchestrator (Conversation ID: 92d3855f-6799-4374-99a6-9a1ffd3117bb) crashed due to RESOURCE_EXHAUSTED errors.
+Please read `/Users/omtomar/Documents/PhillipCars/novaride/.agents/orchestrator/progress.md` and the existing agent files in that directory to resume work.
+Your task is to orchestrate the verification and polishing of the PhillipCars website according to the requirements in `/Users/omtomar/Documents/PhillipCars/novaride/ORIGINAL_REQUEST.md`.
+Please coordinate with your specialists to implement and verify these changes.
+When all requirements are complete and verified, please report back to the Sentinel with a victory claim.
+
