@@ -324,12 +324,21 @@ body{
 	transition: all 0.5s ease-in-out;
 }
 
-#loading-icon{
+.loading-icon{
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	max-width: 66px;
 	transform: translate(-50%, -50%);
+}
+
+.branded-loader-inline{
+	min-height: 180px;
+	background-color: var(--accent-color);
+	border-radius: 18px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 @keyframes rotate-loading{
@@ -1713,20 +1722,21 @@ header.main-header .header-sticky.active{
 
 .how-work-accordion .accordion-header .accordion-button::after,
 .how-work-accordion .accordion-header .accordion-button.collapsed::after{
-	content: '\f077';
+	content: '';
 	position: absolute;
 	top: 50%;
 	right: 0;
-	font-family: 'Font Awesome 6 Free';
-	font-size: 20px;
-    font-weight: 900;
+	width: 12px;
+	height: 12px;
+	border-right: 2px solid var(--primary-color);
+	border-bottom: 2px solid var(--primary-color);
 	color: var(--primary-color);
-	transform: translate(0px, -50%);
+	transform: translateY(-50%) rotate(-135deg);
 	transition: all 0.3s ease-in-out;
 }
 
 .how-work-accordion .accordion-header .accordion-button.collapsed::after{
-	transform: rotate(-180deg) translate(0px, 50%);
+	transform: translateY(-60%) rotate(45deg);
 }
 
 .how-work-accordion .accordion-item .accordion-body{
@@ -2076,20 +2086,21 @@ header.main-header .header-sticky.active{
 
 .our-faqs-accordion .accordion-header .accordion-button::after,
 .our-faqs-accordion .accordion-header .accordion-button.collapsed::after{
-	content: '\f077';
+	content: '';
 	position: absolute;
 	top: 50%;
 	right: 0;
-	font-family: 'Font Awesome 6 Free';
-	font-size: 20px;
-    font-weight: 900;
+	width: 12px;
+	height: 12px;
+	border-right: 2px solid var(--primary-color);
+	border-bottom: 2px solid var(--primary-color);
 	color: var(--primary-color);
-	transform: translate(0px, -50%);
+	transform: translateY(-50%) rotate(-135deg);
 	transition: all 0.3s ease-in-out;
 }
 
 .our-faqs-accordion .accordion-header .accordion-button.collapsed::after{
-	transform: rotate(-180deg) translate(0px, 50%);
+	transform: translateY(-60%) rotate(45deg);
 }
 
 .our-faqs-accordion .accordion-item .accordion-body{

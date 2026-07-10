@@ -15,6 +15,7 @@ import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
 import Articles from "@/components/Articles";
 import Footer from "@/components/Footer";
+import BrandedLoader from "@/components/BrandedLoader";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -33,16 +34,7 @@ export default function Home() {
   return (
     <>
       {/* Preloader Start */}
-      {loading && (
-        <div className="preloader">
-          <div className="loading-container">
-            <div className="loading"></div>
-            <div id="loading-icon">
-              <img src="/images/loader.svg" alt="Loading Loader" />
-            </div>
-          </div>
-        </div>
-      )}
+      {loading && <BrandedLoader label="Loading PhillipCars..." />}
       {/* Preloader End */}
 
       {/* Main Layout */}

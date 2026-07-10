@@ -6,6 +6,7 @@ import { Navigation, Autoplay } from "swiper/modules";
 import { getCarsAction } from "@/app/actions/cars";
 import FleetCard from "@/components/FleetCard";
 import { SEED_FLEET, type FleetCar } from "@/lib/fleet-data";
+import BrandedLoader from "@/components/BrandedLoader";
 
 export default function PerfectFleets() {
   const [fleets, setFleets] = useState<FleetCar[]>([]);
@@ -45,11 +46,7 @@ export default function PerfectFleets() {
             {/* Testimonial Slider Start */}
             <div className="car-details-slider">
               {loading ? (
-                <div className="text-center py-5">
-                  <div className="spinner-border text-danger" role="status">
-                    <span className="visually-hidden">Loading fleets...</span>
-                  </div>
-                </div>
+                <BrandedLoader label="Loading fleets..." fullScreen={false} />
               ) : (
                 <Swiper
                   modules={[Navigation, Autoplay]}

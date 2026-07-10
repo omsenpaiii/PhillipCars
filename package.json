@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.3.0",
+    "@supabase/supabase-js": "2.57.4",
     "bootstrap": "^5.3.8",
     "framer-motion": "^12.42.2",
     "next": "16.2.10",

@@ -11,6 +11,7 @@ import { FadeIn, FadeInStagger, FadeInStaggerItem } from "@/components/Motion";
 import Link from "next/link";
 import type { SessionUser } from "@/lib/auth";
 import type { FleetCar } from "@/lib/fleet-data";
+import BrandedLoader from "@/components/BrandedLoader";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<SessionUser | null>(null);
@@ -70,16 +71,7 @@ export default function DashboardPage() {
   };
 
   if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "100vh", backgroundColor: "var(--secondary-color)" }}
-      >
-        <div className="spinner-border text-danger" role="status">
-          <span className="visually-hidden">Loading dashboard...</span>
-        </div>
-      </div>
-    );
+    return <BrandedLoader label="Loading dashboard..." />;
   }
 
   if (!user) {

@@ -8,31 +8,31 @@ export default function Testimonials() {
   const reviews = [
     {
       name: "floyd miles",
-      role: "project manager",
+      role: "small business owner",
       image: "/images/author-1.jpg",
       rating: 5,
-      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "I needed a clean, reliable sedan for client meetings across Melbourne, and PhillipCars made the whole process simple from booking to return.",
     },
     {
       name: "annette black",
-      role: "project manager",
+      role: "frequent traveller",
       image: "/images/author-2.jpg",
       rating: 4,
-      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "The airport pickup was smooth, the car matched the listing, and the support team was quick to answer my questions before arrival.",
     },
     {
       name: "leslie alexander",
-      role: "project manager",
+      role: "vehicle host",
       image: "/images/author-3.jpg",
       rating: 3,
-      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "Listing my car was easier than I expected. The onboarding flow was straightforward, and I liked being able to manage everything from one dashboard.",
     },
     {
       name: "alis white",
-      role: "project manager",
+      role: "events coordinator",
       image: "/images/author-4.jpg",
       rating: 5,
-      comment: "Renting a car from PhillipCars was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.",
+      comment: "We booked a premium vehicle for an executive guest and the experience felt polished from start to finish. It was exactly what we needed.",
     },
   ];
 

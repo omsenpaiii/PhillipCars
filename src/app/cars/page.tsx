@@ -8,47 +8,7 @@ import { FadeIn, FadeInStagger, FadeInStaggerItem } from "@/components/Motion";
 import FleetCard from "@/components/FleetCard";
 import type { FleetCar } from "@/lib/fleet-data";
 import { useSearchParams } from "next/navigation";
-
-function CarSkeleton() {
-  return (
-    <div 
-      className="perfect-fleet-item" 
-      style={{ 
-        height: "100%", 
-        border: "1px solid var(--divider-color)", 
-        borderRadius: "18px", 
-        overflow: "hidden",
-        backgroundColor: "#fff",
-        pointerEvents: "none"
-      }}
-    >
-      {/* Image box placeholder */}
-      <div className="skeleton-shimmer" style={{ height: "200px", width: "100%" }}></div>
-      
-      {/* Content placeholder */}
-      <div className="perfect-fleet-content" style={{ padding: "30px" }}>
-        <div className="skeleton-shimmer" style={{ height: "12px", width: "25%", borderRadius: "4px", marginBottom: "12px" }}></div>
-        <div className="skeleton-shimmer" style={{ height: "24px", width: "65%", borderRadius: "6px", marginBottom: "25px" }}></div>
-        
-        {/* Specs placeholder */}
-        <div style={{ display: "flex", gap: "10px", marginBottom: "25px" }}>
-          <div className="skeleton-shimmer" style={{ height: "16px", flex: 1, borderRadius: "4px" }}></div>
-          <div className="skeleton-shimmer" style={{ height: "16px", flex: 1, borderRadius: "4px" }}></div>
-          <div className="skeleton-shimmer" style={{ height: "16px", flex: 1, borderRadius: "4px" }}></div>
-        </div>
-        
-        {/* Footer placeholder */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "15px", borderTop: "1px solid #f3f4f6" }}>
-          <div style={{ width: "45%" }}>
-            <div className="skeleton-shimmer" style={{ height: "24px", width: "80%", borderRadius: "6px", marginBottom: "6px" }}></div>
-            <div className="skeleton-shimmer" style={{ height: "10px", width: "60%", borderRadius: "3px" }}></div>
-          </div>
-          <div className="skeleton-shimmer" style={{ height: "44px", width: "44px", borderRadius: "50%" }}></div>
-        </div>
-      </div>
-    </div>
-  );
-}
+import BrandedLoader from "@/components/BrandedLoader";
 
 function CarsContent() {
   const [mounted, setMounted] = useState(false);
@@ -206,13 +166,7 @@ function CarsContent() {
         {/* Cars Grid */}
         <div className="col-lg-9">
           {(!mounted || loading) ? (
-            <div className="row">
-              {[1, 2, 3, 4].map((n) => (
-                <div key={n} className="col-md-6 mb-4">
-                  <CarSkeleton />
-                </div>
-              ))}
-            </div>
+            <BrandedLoader label="Loading available cars..." fullScreen={false} />
           ) : (cars.length === 0 && hasFetched) ? (
             <div className="text-center" style={{ padding: "100px 0" }}>
               <i className="fa-solid fa-car-rear mb-3" style={{ fontSize: "48px", color: "#ccc" }}></i>
@@ -264,20 +218,7 @@ export default function CarsPage() {
       <Suspense
         fallback={
           <div className="container" style={{ padding: "60px 15px" }}>
-            <div className="row">
-              <div className="col-lg-3">
-                <div style={{ height: "300px", backgroundColor: "#fff", borderRadius: "18px", border: "1px solid var(--divider-color)" }} className="skeleton-shimmer"></div>
-              </div>
-              <div className="col-lg-9">
-                <div className="row">
-                  {[1, 2, 3, 4].map((n) => (
-                    <div key={n} className="col-md-6 mb-4">
-                      <div style={{ height: "450px", backgroundColor: "#fff", borderRadius: "18px", border: "1px solid var(--divider-color)" }} className="skeleton-shimmer"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <BrandedLoader label="Loading available cars..." fullScreen={false} />
           </div>
         }
       >

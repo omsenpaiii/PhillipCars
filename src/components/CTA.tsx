@@ -22,7 +22,7 @@ export default function CTA() {
 
               {/* Cta Box Btn Start */}
               <div className="cta-box-btn wow fadeInUp" data-wow-delay="0.5s">
-                <Link href="/#contact" className="btn-default">
+                <Link href="/contact-us" className="btn-default">
                   contact us
                 </Link>
               </div>

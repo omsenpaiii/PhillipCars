@@ -38,6 +38,8 @@ export default function Header() {
     window.location.href = "/";
   };
 
+  const isContactPage = pathname === "/contact-us";
+
   return (
     <header className="main-header">
       <div className={`header-sticky ${isSticky ? "active" : ""}`}>
@@ -90,7 +92,7 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" href="/#contact">
+                    <Link className="nav-link" href="/contact-us" style={isContactPage ? { color: "var(--accent-color)" } : undefined}>
                       Contact Us
                     </Link>
                   </li>
@@ -191,7 +193,7 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link href="/#contact" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/contact-us" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
                   Contact Us
                 </Link>
               </li>

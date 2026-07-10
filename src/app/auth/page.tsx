@@ -6,6 +6,7 @@ import { signInAction, signUpAction } from "../actions/auth";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ScaleIn } from "@/components/Motion";
+import BrandedLoader from "@/components/BrandedLoader";
 
 function AuthFormContent() {
   const searchParams = useSearchParams();
@@ -289,16 +290,7 @@ export default function AuthPage() {
     <>
       <Header />
       <Suspense
-        fallback={
-          <div
-            className="d-flex justify-content-center align-items-center"
-            style={{ minHeight: "80vh", backgroundColor: "var(--secondary-color)", marginTop: "120px" }}
-          >
-            <div className="spinner-border text-danger" role="status">
-              <span className="visually-hidden">Loading Auth...</span>
-            </div>
-          </div>
-        }
+        fallback={<BrandedLoader label="Loading authentication..." fullScreen={false} />}
       >
         <AuthFormContent />
       </Suspense>

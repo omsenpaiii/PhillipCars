@@ -89,7 +89,7 @@ export default function AboutUs() {
 
               {/* About Content Footer Start */}
               <FadeIn delay={0.6} className="about-content-footer wow fadeInUp">
-                <Link href="/#contact" className="btn-default">
+                <Link href="/contact-us" className="btn-default">
                   contact us
                 </Link>
               </FadeIn>

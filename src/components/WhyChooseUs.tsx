@@ -10,7 +10,7 @@ export default function WhyChooseUs() {
             <div className="section-title">
               <h3 className="wow fadeInUp">why choose us</h3>
               <h2 className="text-anime-style-3" data-cursor="-opaque">
-                Unmatched quality and service for your needs
+                Flexible car access backed by local service you can trust
               </h2>
             </div>
             {/* Section Title End */}
@@ -27,7 +27,7 @@ export default function WhyChooseUs() {
               </div>
               <div className="why-choose-content">
                 <h3>extensive fleet options</h3>
-                <p>Quisque Sollicitudin Feugiat Risus, Eu Posuere Ex Euismod Eu. Phasellus Hendrerit, Massa</p>
+                <p>Choose from compact city cars, premium sedans, family SUVs, and business-ready vehicles for every kind of trip.</p>
               </div>
             </div>
             {/* Why Choose Item End */}
@@ -39,7 +39,7 @@ export default function WhyChooseUs() {
               </div>
               <div className="why-choose-content">
                 <h3>exceptional customer service</h3>
-                <p>Quisque Sollicitudin Feugiat Risus, Eu Posuere Ex Euismod Eu. Phasellus Hendrerit, Massa</p>
+                <p>Our team helps with bookings, listing support, and rent-to-own questions so you always know your next step.</p>
               </div>
             </div>
             {/* Why Choose Item End */}
@@ -63,7 +63,7 @@ export default function WhyChooseUs() {
               </div>
               <div className="why-choose-content">
                 <h3>convenient locations</h3>
-                <p>Quisque Sollicitudin Feugiat Risus, Eu Posuere Ex Euismod Eu. Phasellus Hendrerit, Massa</p>
+                <p>Access vehicles across Melbourne with practical pickup and drop-off options designed around your schedule.</p>
               </div>
             </div>
             {/* Why Choose Item End */}
@@ -75,7 +75,7 @@ export default function WhyChooseUs() {
               </div>
               <div className="why-choose-content">
                 <h3>reliability and safety</h3>
-                <p>Quisque Sollicitudin Feugiat Risus, Eu Posuere Ex Euismod Eu. Phasellus Hendrerit, Massa</p>
+                <p>Every listing is presented with clear details so renters and owners can make confident, informed decisions.</p>
               </div>
             </div>
             {/* Why Choose Item End */}

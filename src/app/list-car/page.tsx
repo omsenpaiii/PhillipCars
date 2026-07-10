@@ -7,6 +7,7 @@ import { listCarAction } from "../actions/cars";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FadeIn, ScaleIn } from "@/components/Motion";
+import BrandedLoader from "@/components/BrandedLoader";
 
 const CAR_TEMPLATES = [
   { id: "bmw", name: "BMW M2 Template", image: "/images/perfect-fleet-img-1.png" },
@@ -24,6 +25,9 @@ export default function ListCarPage() {
   const [step, setStep] = useState(1);
   const [mode, setMode] = useState<"rent" | "sell" | "rto">("rent");
   const [selectedTemplate, setSelectedTemplate] = useState("/images/perfect-fleet-img-1.png");
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [uploadPreviewUrl, setUploadPreviewUrl] = useState("");
+  const [uploadLoading, setUploadLoading] = useState(false);
   const [features, setFeatures] = useState<string[]>([]);
   
   const router = useRouter();
@@ -41,7 +45,7 @@ export default function ListCarPage() {
   }, [router]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const timer = window.setTimeout(() => {
       const params = new URLSearchParams(window.location.search);
       const m = params.get("mode");
       if (m === "sell") {
@@ -51,8 +55,15 @@ export default function ListCarPage() {
       } else {
         setMode("rent");
       }
-    }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [router]);
+
+  useEffect(() => {
+    return () => {
+      if (uploadPreviewUrl) URL.revokeObjectURL(uploadPreviewUrl);
+    };
+  }, [uploadPreviewUrl]);
 
   const handleFeatureToggle = (featureName: string) => {
     setFeatures((prev) =>
@@ -69,10 +80,13 @@ export default function ListCarPage() {
     setSubmitLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    formData.delete("car_image_upload");
     const customImageUrl = formData.get("custom_image_url") as string;
     const trimmedCustomImageUrl = customImageUrl ? customImageUrl.trim() : "";
 
-    if (trimmedCustomImageUrl) {
+    if (uploadedImageUrl) {
+      formData.append("image", uploadedImageUrl);
+    } else if (trimmedCustomImageUrl) {
       formData.append("image", trimmedCustomImageUrl);
     } else {
       formData.append("image", selectedTemplate);
@@ -108,17 +122,40 @@ export default function ListCarPage() {
     }
   };
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setError(null);
+    setUploadLoading(true);
+    const previewUrl = URL.createObjectURL(file);
+    setUploadPreviewUrl((current) => {
+      if (current) URL.revokeObjectURL(current);
+      return previewUrl;
+    });
+
+    const uploadData = new FormData();
+    uploadData.append("image", file);
+
+    try {
+      const response = await fetch("/api/car-images", { method: "POST", body: uploadData });
+      const result = (await response.json()) as { url?: string; error?: string };
+      if (!response.ok || !result.url) {
+        setUploadedImageUrl("");
+        setError(result.error || "Image upload failed. Please try again.");
+        return;
+      }
+      setUploadedImageUrl(result.url);
+    } catch {
+      setUploadedImageUrl("");
+      setError("Image upload failed. Please check your connection and try again.");
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
   if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: "100vh", backgroundColor: "var(--secondary-color)" }}
-      >
-        <div className="spinner-border text-danger" role="status">
-          <span className="visually-hidden">Loading list car form...</span>
-        </div>
-      </div>
-    );
+    return <BrandedLoader label="Loading list car form..." />;
   }
 
   return (
@@ -158,18 +195,18 @@ export default function ListCarPage() {
                       gap: "5px"
                     }}
                   >
-                    {[
+                    {([
                       { id: "rent", label: "List for Rent" },
                       { id: "sell", label: "Sell Your Car" },
                       { id: "rto", label: "Rent to Own" }
-                    ].map((tab) => {
+                    ] as const).map((tab) => {
                       const isActive = mode === tab.id;
                       return (
                         <button
                           key={tab.id}
                           type="button"
                           onClick={() => {
-                            setMode(tab.id as any);
+                            setMode(tab.id);
                             const url = new URL(window.location.href);
                             url.searchParams.set("mode", tab.id);
                             window.history.pushState({}, "", url.toString());
@@ -354,6 +391,33 @@ export default function ListCarPage() {
                         </div>
 
                         <div className="form-group mb-4">
+                          <label htmlFor="car-image-upload" style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
+                            Upload Your Car Image
+                          </label>
+                          <input
+                            id="car-image-upload"
+                            type="file"
+                            name="car_image_upload"
+                            className="form-control"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleImageUpload}
+                            disabled={uploadLoading}
+                            style={{ borderRadius: "10px", minHeight: "48px" }}
+                          />
+                          <small className="form-text text-muted" style={{ display: "block", marginTop: "6px", fontSize: "12px" }}>
+                            JPG, PNG, or WebP up to 4 MB. An uploaded image takes priority over a URL or template.
+                          </small>
+                          {uploadPreviewUrl && (
+                            <div style={{ marginTop: "12px", padding: "12px", border: "1px solid var(--divider-color)", borderRadius: "12px", textAlign: "center" }}>
+                              <img src={uploadPreviewUrl} alt="Selected car upload preview" style={{ maxHeight: "150px", maxWidth: "100%", objectFit: "contain" }} />
+                              <div style={{ marginTop: "8px", fontSize: "12px", color: uploadedImageUrl ? "#198754" : "var(--text-color)" }}>
+                                {uploadLoading ? "Uploading image..." : uploadedImageUrl ? "Image uploaded successfully" : "Image is ready to retry"}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="form-group mb-4">
                           <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
                             Or Provide a Custom Image URL
                           </label>
@@ -381,6 +445,7 @@ export default function ListCarPage() {
                           <button
                             type="button"
                             onClick={() => setStep(3)}
+                            disabled={uploadLoading}
                             className="btn-default btn-no-overflow"
                             style={{ minWidth: "165px", height: "48px", padding: "0 25px" }}
                           >
