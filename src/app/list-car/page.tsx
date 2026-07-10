@@ -190,7 +190,7 @@ export default function ListCarPage() {
                   {/* Form */}
                   <form onSubmit={handleSubmit}>
                     {/* STEP 1: Basic Info */}
-                    {step === 1 && (
+                    <div style={{ display: step === 1 ? "block" : "none" }}>
                       <FadeIn>
                         <h4 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "20px" }}>Basic Information</h4>
                         <div className="form-group mb-3">
@@ -202,7 +202,7 @@ export default function ListCarPage() {
                             name="name"
                             className="form-control"
                             placeholder="e.g. BMW M4 Coupe 2021"
-                            required
+                            required={step === 1}
                             style={{ borderRadius: "10px", height: "48px" }}
                           />
                         </div>
@@ -214,7 +214,7 @@ export default function ListCarPage() {
                           <select
                             name="type"
                             className="form-select"
-                            required
+                            required={step === 1}
                             style={{ borderRadius: "10px", height: "48px" }}
                           >
                             <option value="luxury">Luxury Car</option>
@@ -235,10 +235,10 @@ export default function ListCarPage() {
                           </button>
                         </div>
                       </FadeIn>
-                    )}
+                    </div>
 
                     {/* STEP 2: Template / Image Choice */}
-                    {step === 2 && (
+                    <div style={{ display: step === 2 ? "block" : "none" }}>
                       <FadeIn>
                         <h4 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "15px" }}>Select Car Template Styling</h4>
                         <p style={{ color: "var(--text-color)", fontSize: "13px", marginBottom: "20px" }}>
@@ -289,10 +289,10 @@ export default function ListCarPage() {
                           </button>
                         </div>
                       </FadeIn>
-                    )}
+                    </div>
 
                     {/* STEP 3: Rates, Specs & Features */}
-                    {step === 3 && (
+                    <div style={{ display: step === 3 ? "block" : "none" }}>
                       <FadeIn>
                         <h4 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "20px" }}>Pricing, Specs & Features</h4>
                         
@@ -309,7 +309,7 @@ export default function ListCarPage() {
                               placeholder="e.g. 250"
                               min="50"
                               max="1000"
-                              required
+                              required={step === 3}
                               style={{ borderRadius: "10px", height: "48px" }}
                             />
                           </div>
@@ -324,7 +324,7 @@ export default function ListCarPage() {
                               placeholder="e.g. 750"
                               min="100"
                               max="5000"
-                              required
+                              required={step === 3}
                               style={{ borderRadius: "10px", height: "48px" }}
                             />
                           </div>
@@ -421,7 +421,7 @@ export default function ListCarPage() {
                           </button>
                         </div>
                       </FadeIn>
-                    )}
+                    </div>
                   </form>
                 </div>
               </ScaleIn>
