@@ -22,6 +22,7 @@ export default function ListCarPage() {
   const [success, setSuccess] = useState<string | null>(null);
   
   const [step, setStep] = useState(1);
+  const [mode, setMode] = useState<"rent" | "sell" | "rto">("rent");
   const [selectedTemplate, setSelectedTemplate] = useState("/images/perfect-fleet-img-1.png");
   const [features, setFeatures] = useState<string[]>([]);
   
@@ -39,6 +40,20 @@ export default function ListCarPage() {
     checkAuth();
   }, [router]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const m = params.get("mode");
+      if (m === "sell") {
+        setMode("sell");
+      } else if (m === "rto") {
+        setMode("rto");
+      } else {
+        setMode("rent");
+      }
+    }
+  }, [router]);
+
   const handleFeatureToggle = (featureName: string) => {
     setFeatures((prev) =>
       prev.includes(featureName)
@@ -54,8 +69,26 @@ export default function ListCarPage() {
     setSubmitLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    formData.append("image", selectedTemplate);
+    const customImageUrl = formData.get("custom_image_url") as string;
+    const trimmedCustomImageUrl = customImageUrl ? customImageUrl.trim() : "";
+
+    if (trimmedCustomImageUrl) {
+      formData.append("image", trimmedCustomImageUrl);
+    } else {
+      formData.append("image", selectedTemplate);
+    }
+
     formData.append("features", features.join(","));
+    formData.append("mode", mode);
+
+    // If in sell mode, set rent_to_own_price to 0 if not present
+    if (mode === "sell" && !formData.get("rent_to_own_price")) {
+      formData.append("rent_to_own_price", "0");
+    }
+    // If in rto mode, set price_per_day to 0 if not present
+    if (mode === "rto" && !formData.get("price_per_day")) {
+      formData.append("price_per_day", "0");
+    }
 
     try {
       const res = await listCarAction(formData);
@@ -115,12 +148,63 @@ export default function ListCarPage() {
                     border: "1px solid var(--divider-color)",
                   }}
                 >
+                  {/* Tab Selector */}
+                  <div 
+                    className="mb-4"
+                    style={{
+                      display: "flex",
+                      backgroundColor: "#f3f4f6",
+                      borderRadius: "14px",
+                      padding: "6px",
+                      gap: "5px"
+                    }}
+                  >
+                    {[
+                      { id: "rent", label: "List for Rent" },
+                      { id: "sell", label: "Sell Your Car" },
+                      { id: "rto", label: "Rent to Own" }
+                    ].map((tab) => {
+                      const isActive = mode === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          type="button"
+                          onClick={() => {
+                            setMode(tab.id as any);
+                            const url = new URL(window.location.href);
+                            url.searchParams.set("mode", tab.id);
+                            window.history.pushState({}, "", url.toString());
+                          }}
+                          style={{
+                            flex: 1,
+                            padding: "12px 10px",
+                            borderRadius: "10px",
+                            border: "none",
+                            fontWeight: 700,
+                            fontSize: "14px",
+                            backgroundColor: isActive ? "var(--accent-color)" : "transparent",
+                            color: isActive ? "#fff" : "var(--primary-color)",
+                            cursor: "pointer",
+                            transition: "all 0.3s ease",
+                            textAlign: "center"
+                          }}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+
                   <div className="text-center mb-4">
                     <h2 style={{ fontSize: "30px", fontWeight: 700, color: "var(--primary-color)" }}>
-                      List Your Vehicle
+                      {mode === "sell" ? "Sell Your Vehicle" : mode === "rto" ? "List Rent-to-Own Vehicle" : "List Your Vehicle"}
                     </h2>
                     <p style={{ color: "var(--text-color)", fontSize: "14px" }}>
-                      Earn money by sharing your car on the PhillipCars platform
+                      {mode === "sell" 
+                        ? "List your car for sale on the PhillipCars marketplace" 
+                        : mode === "rto" 
+                          ? "Earn recurring income with structured Rent-to-Own lease options" 
+                          : "Earn money by sharing your car for rent on the PhillipCars platform"}
                     </p>
                   </div>
 
@@ -224,12 +308,12 @@ export default function ListCarPage() {
                           </select>
                         </div>
 
-                        <div className="text-end">
+                         <div className="text-end">
                           <button
                             type="button"
                             onClick={() => setStep(2)}
                             className="btn-default btn-no-overflow"
-                            style={{ width: "150px", height: "48px" }}
+                            style={{ minWidth: "165px", height: "48px", padding: "0 25px" }}
                           >
                             Next Step
                           </button>
@@ -270,12 +354,28 @@ export default function ListCarPage() {
                           })}
                         </div>
 
+                        <div className="form-group mb-4">
+                          <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
+                            Or Provide a Custom Image URL
+                          </label>
+                          <input
+                            type="text"
+                            name="custom_image_url"
+                            className="form-control"
+                            placeholder="https://example.com/your-car.jpg"
+                            style={{ borderRadius: "10px", height: "48px" }}
+                          />
+                          <small className="form-text text-muted" style={{ display: "block", marginTop: "6px", fontSize: "12px", color: "var(--text-color)" }}>
+                            If provided, this URL will override the selected template.
+                          </small>
+                        </div>
+
                         <div className="d-flex justify-content-between">
                           <button
                             type="button"
                             onClick={() => setStep(1)}
                             className="btn-default btn-no-overflow btn-highlighted"
-                            style={{ width: "150px", height: "48px" }}
+                            style={{ minWidth: "165px", height: "48px", padding: "0 25px" }}
                           >
                             Back
                           </button>
@@ -283,7 +383,7 @@ export default function ListCarPage() {
                             type="button"
                             onClick={() => setStep(3)}
                             className="btn-default btn-no-overflow"
-                            style={{ width: "150px", height: "48px" }}
+                            style={{ minWidth: "165px", height: "48px", padding: "0 25px" }}
                           >
                             Next Step
                           </button>
@@ -298,36 +398,40 @@ export default function ListCarPage() {
                         
                         {/* Pricing inputs */}
                         <div className="row mb-3">
-                          <div className="col-md-6 mb-3">
-                            <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
-                              Daily Rental Rate ($)
-                            </label>
-                            <input
-                              type="number"
-                              name="price_per_day"
-                              className="form-control"
-                              placeholder="e.g. 250"
-                              min="50"
-                              max="1000"
-                              required={step === 3}
-                              style={{ borderRadius: "10px", height: "48px" }}
-                            />
-                          </div>
-                          <div className="col-md-6 mb-3">
-                            <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
-                              Monthly Rent-to-Own Rate ($)
-                            </label>
-                            <input
-                              type="number"
-                              name="rent_to_own_price"
-                              className="form-control"
-                              placeholder="e.g. 750"
-                              min="100"
-                              max="5000"
-                              required={step === 3}
-                              style={{ borderRadius: "10px", height: "48px" }}
-                            />
-                          </div>
+                          {mode !== "rto" && (
+                            <div className={mode === "sell" ? "col-md-12 mb-3" : "col-md-6 mb-3"}>
+                              <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
+                                {mode === "sell" ? "Sale Price ($)" : "Daily Rental Rate ($)"}
+                              </label>
+                              <input
+                                type="number"
+                                name="price_per_day"
+                                className="form-control"
+                                placeholder={mode === "sell" ? "e.g. 15000" : "e.g. 250"}
+                                min={mode === "sell" ? "1000" : "50"}
+                                max={mode === "sell" ? "1000000" : "1000"}
+                                required={step === 3 && mode !== "rto"}
+                                style={{ borderRadius: "10px", height: "48px" }}
+                              />
+                            </div>
+                          )}
+                          {mode !== "sell" && (
+                            <div className={mode === "rto" ? "col-md-12 mb-3" : "col-md-6 mb-3"}>
+                              <label style={{ fontSize: "14px", fontWeight: 600, color: "var(--primary-color)", marginBottom: "6px" }}>
+                                Monthly Rent-to-Own Rate ($)
+                              </label>
+                              <input
+                                type="number"
+                                name="rent_to_own_price"
+                                className="form-control"
+                                placeholder="e.g. 750"
+                                min="100"
+                                max="5000"
+                                required={step === 3 && mode !== "sell"}
+                                style={{ borderRadius: "10px", height: "48px" }}
+                              />
+                            </div>
+                          )}
                         </div>
 
                         {/* Specs inputs */}
@@ -402,7 +506,7 @@ export default function ListCarPage() {
                             type="button"
                             onClick={() => setStep(2)}
                             className="btn-default btn-no-overflow btn-highlighted"
-                            style={{ width: "150px", height: "48px" }}
+                            style={{ minWidth: "165px", height: "48px", padding: "0 25px" }}
                           >
                             Back
                           </button>
@@ -411,8 +515,9 @@ export default function ListCarPage() {
                             disabled={submitLoading}
                             className="btn-default btn-no-overflow"
                             style={{
-                              width: "180px",
+                              minWidth: "185px",
                               height: "48px",
+                              padding: "0 25px",
                               backgroundColor: submitLoading ? "#ccc" : "var(--accent-color)",
                               cursor: submitLoading ? "not-allowed" : "pointer",
                             }}

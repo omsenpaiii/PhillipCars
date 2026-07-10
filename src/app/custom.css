@@ -6698,3 +6698,13 @@ header.main-header .header-sticky.active{
 	background: transparent;
 	cursor: pointer;
 }
+
+/* Navbar Menu Item Alignment & Spacing Overrides */
+@media (min-width: 992px) {
+  .main-menu ul li {
+    margin: 0 3px !important;
+  }
+  .main-menu ul li a {
+    padding: 14px 10px !important;
+  }
+}
