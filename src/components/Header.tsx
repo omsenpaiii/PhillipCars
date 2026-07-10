@@ -63,10 +63,21 @@ export default function Header() {
                       Our Fleets
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" href="/list-car" style={pathname === "/list-car" ? { color: "var(--accent-color)" } : undefined}>
+                  <li className="nav-item submenu">
+                    <Link className="nav-link" href="#" onClick={(e) => e.preventDefault()} style={pathname === "/list-car" ? { color: "var(--accent-color)" } : undefined}>
                       List Your Car
                     </Link>
+                    <ul>
+                      <li>
+                        <Link href="/list-car">List Your Car</Link>
+                      </li>
+                      <li>
+                        <Link href="/list-car?mode=sell">Sell Your Car</Link>
+                      </li>
+                      <li>
+                        <Link href="/cars">Rent to Own</Link>
+                      </li>
+                    </ul>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" href="/#about">
@@ -150,9 +161,24 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link href="/list-car" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                  List Your Car
-                </Link>
+                <div style={{ padding: "10px 20px", fontWeight: 700, color: "var(--accent-color)" }}>List / Sell / RTO</div>
+                <ul style={{ listStyle: "none", paddingLeft: "20px" }}>
+                  <li>
+                    <Link href="/list-car" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                      List Your Car
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/list-car?mode=sell" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                      Sell Your Car
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/cars" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                      Rent to Own
+                    </Link>
+                  </li>
+                </ul>
               </li>
               <li>
                 <Link href="/#about" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
