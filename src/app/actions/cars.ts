@@ -57,9 +57,9 @@ export async function listCarAction(formData: FormData) {
     return { success: false, error: "You must be logged in to list a car." };
   }
 
-  const name = formData.get("name") as string;
+  const name = (formData.get("name") as string || "").trim();
   const type = formData.get("type") as string;
-  const image = formData.get("image") as string;
+  const image = (formData.get("image") as string || "").trim();
   const pricePerDay = parseFloat(formData.get("price_per_day") as string);
   const rentToOwnPrice = parseFloat(formData.get("rent_to_own_price") as string);
   const doors = parseInt(formData.get("doors") as string) || 4;
@@ -71,6 +71,10 @@ export async function listCarAction(formData: FormData) {
 
   if (!name || !type || !image || isNaN(pricePerDay) || isNaN(rentToOwnPrice)) {
     return { success: false, error: "Please fill in all required fields with valid values." };
+  }
+
+  if (pricePerDay < 0 || rentToOwnPrice < 0) {
+    return { success: false, error: "Please enter non-negative rates." };
   }
 
   try {
@@ -96,5 +100,23 @@ export async function listCarAction(formData: FormData) {
   } catch (err: unknown) {
     console.error("Error listing car:", err);
     return { success: false, error: err instanceof Error ? err.message : "Failed to submit car listing." };
+  }
+}
+
+export async function getUserListingsAction() {
+  const user = await getSessionUser();
+  if (!user) {
+    return { success: false, error: "You must be logged in to view your listings." };
+  }
+
+  try {
+    const res = await query<FleetCar>(
+      "SELECT * FROM public.cars WHERE host_id = $1 ORDER BY created_at DESC",
+      [user.id]
+    );
+    return { success: true, listings: res.rows.map(normalizeFleetCar) };
+  } catch (err: unknown) {
+    console.error("Error fetching user listings:", err);
+    return { success: true, listings: [] };
   }
 }

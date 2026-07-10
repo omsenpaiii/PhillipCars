@@ -127,10 +127,9 @@ export default function ListCarPage() {
       <div
         className="bg-section"
         style={{
-          margin: "120px auto 60px",
-          padding: "60px 0",
+          padding: "160px 0 60px",
           backgroundColor: "var(--secondary-color)",
-          minHeight: "75vh",
+          minHeight: "85vh",
           display: "flex",
           alignItems: "center",
         }}
@@ -410,7 +409,7 @@ export default function ListCarPage() {
                                 placeholder={mode === "sell" ? "e.g. 15000" : "e.g. 250"}
                                 min={mode === "sell" ? "1000" : "50"}
                                 max={mode === "sell" ? "1000000" : "1000"}
-                                required={step === 3 && mode !== "rto"}
+                                required={step === 3}
                                 style={{ borderRadius: "10px", height: "48px" }}
                               />
                             </div>
@@ -427,7 +426,7 @@ export default function ListCarPage() {
                                 placeholder="e.g. 750"
                                 min="100"
                                 max="5000"
-                                required={step === 3 && mode !== "sell"}
+                                required={step === 3}
                                 style={{ borderRadius: "10px", height: "48px" }}
                               />
                             </div>

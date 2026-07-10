@@ -4,15 +4,18 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signOutAction, getCurrentUserAction } from "../actions/auth";
 import { getUserBookingsAction, cancelBookingAction, type UserBooking } from "../actions/booking";
+import { getUserListingsAction } from "../actions/cars";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FadeIn, FadeInStagger, FadeInStaggerItem } from "@/components/Motion";
 import Link from "next/link";
 import type { SessionUser } from "@/lib/auth";
+import type { FleetCar } from "@/lib/fleet-data";
 
 export default function DashboardPage() {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [bookings, setBookings] = useState<UserBooking[]>([]);
+  const [listings, setListings] = useState<FleetCar[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,6 +35,11 @@ export default function DashboardPage() {
       const bookingsRes = await getUserBookingsAction();
       if (bookingsRes.success && bookingsRes.bookings) {
         setBookings(bookingsRes.bookings);
+      }
+
+      const listingsRes = await getUserListingsAction();
+      if (listingsRes.success && listingsRes.listings) {
+        setListings(listingsRes.listings);
       }
       setLoading(false);
     }
@@ -81,7 +89,7 @@ export default function DashboardPage() {
   return (
     <>
       <Header />
-      <div className="bg-section" style={{ marginTop: "120px", padding: "60px 0", minHeight: "75vh" }}>
+      <div className="bg-section" style={{ paddingTop: "160px", paddingBottom: "60px", minHeight: "85vh", backgroundColor: "var(--secondary-color)" }}>
         <div className="container">
           <div className="row">
             {/* Sidebar: Profile card */}
@@ -310,6 +318,137 @@ export default function DashboardPage() {
                                 >
                                   {actionLoading === booking.id ? "Cancelling..." : "Cancel Trip"}
                                 </button>
+                              )}
+                            </div>
+                          </FadeInStaggerItem>
+                        );
+                      })}
+                    </FadeInStagger>
+                  )}
+                </div>
+              </FadeIn>
+
+              {/* Listings Section */}
+              <FadeIn delay={0.25}>
+                <div
+                  style={{
+                    backgroundColor: "#fff",
+                    borderRadius: "20px",
+                    padding: "40px",
+                    border: "1px solid var(--divider-color)",
+                    boxShadow: "0px 5px 20px rgba(0,0,0,0.02)",
+                    marginTop: "30px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "30px",
+                    }}
+                  >
+                    <h2 style={{ fontSize: "26px", fontWeight: 700, margin: 0 }}>My Listed Vehicles</h2>
+                    <Link href="/list-car" className="btn-default" style={{ padding: "12px 20px", fontSize: "14px", marginRight: 0 }}>
+                      List Another Car
+                    </Link>
+                  </div>
+
+                  {listings.length === 0 ? (
+                    <div className="text-center" style={{ padding: "60px 0" }}>
+                      <i className="fa-solid fa-car mb-3" style={{ fontSize: "48px", color: "#ccc" }}></i>
+                      <h3>No Vehicles Listed</h3>
+                      <p style={{ color: "var(--text-color)" }}>
+                        You haven&apos;t listed any vehicles yet. List your car on PhillipCars to start earning!
+                      </p>
+                    </div>
+                  ) : (
+                    <FadeInStagger style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                      {listings.map((car) => {
+                        return (
+                          <FadeInStaggerItem
+                            key={car.id}
+                            style={{
+                              border: "1px solid var(--divider-color)",
+                              borderRadius: "16px",
+                              padding: "20px",
+                              display: "flex",
+                              gap: "20px",
+                              flexWrap: "wrap",
+                              alignItems: "center",
+                              backgroundColor: "#fff",
+                            }}
+                          >
+                            {/* Car Thumbnail */}
+                            <div
+                              style={{
+                                width: "120px",
+                                padding: "10px",
+                                backgroundColor: "var(--secondary-color)",
+                                borderRadius: "12px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <img src={car.image} alt="" style={{ maxWidth: "100%", height: "auto" }} />
+                            </div>
+
+                            {/* Details */}
+                            <div style={{ flex: 1, minWidth: "220px" }}>
+                              <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "4px" }}>
+                                <span
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: 700,
+                                    textTransform: "uppercase",
+                                    padding: "3px 8px",
+                                    borderRadius: "100px",
+                                    backgroundColor: "#e0f2fe",
+                                    color: "#0369a1",
+                                  }}
+                                >
+                                  {car.type}
+                                </span>
+                                <span
+                                  style={{
+                                    fontSize: "10px",
+                                    fontWeight: 700,
+                                    textTransform: "uppercase",
+                                    padding: "3px 8px",
+                                    borderRadius: "100px",
+                                    backgroundColor: "#dcfce7",
+                                    color: "#15803d",
+                                  }}
+                                >
+                                  {car.status}
+                                </span>
+                              </div>
+                              <h4 style={{ fontSize: "18px", fontWeight: 700, margin: "0 0 8px" }}>
+                                {car.name}
+                              </h4>
+                              <p style={{ margin: 0, fontSize: "13px", color: "var(--text-color)" }}>
+                                <strong>Transmission:</strong> {car.transmission} | <strong>Passengers:</strong> {car.passengers} | <strong>Doors:</strong> {car.doors}
+                              </p>
+                            </div>
+
+                            {/* Pricing */}
+                            <div className="text-md-end" style={{ minWidth: "150px" }}>
+                              {Number(car.price_per_day) > 0 && (
+                                <div>
+                                  <span style={{ fontSize: "12px", color: "var(--text-color)" }}>Rental Price</span>
+                                  <h4 style={{ fontSize: "18px", fontWeight: 700, margin: "0 0 4px", color: "var(--primary-color)" }}>
+                                    ${Number(car.price_per_day).toFixed(0)}/day
+                                  </h4>
+                                </div>
+                              )}
+                              {Number(car.rent_to_own_price) > 0 && (
+                                <div>
+                                  <span style={{ fontSize: "12px", color: "var(--text-color)" }}>Rent to Own</span>
+                                  <h4 style={{ fontSize: "18px", fontWeight: 700, margin: 0, color: "var(--accent-color)" }}>
+                                    ${Number(car.rent_to_own_price).toFixed(0)}/mo
+                                  </h4>
+                                </div>
                               )}
                             </div>
                           </FadeInStaggerItem>
