@@ -7,24 +7,24 @@ import Link from "next/link";
 export default function Services() {
   const services = [
     {
-      title: "car rental with driver",
+      title: "personal driver",
       icon: "/images/icon-service-1.svg",
-      desc: "Enhance your rental experience with additional options.",
+      desc: "Enjoy discreet, personalised service with a professional driver dedicated to your comfort.",
     },
     {
-      title: "business car rental",
+      title: "executive business vehicles",
       icon: "/images/icon-service-2.svg",
-      desc: "Enhance your rental experience with additional options.",
+      desc: "Make every arrival count with premium vehicles tailored for executive and corporate travel.",
     },
     {
-      title: "airport transfer",
+      title: "airport transfers",
       icon: "/images/icon-service-3.svg",
-      desc: "Enhance your rental experience with additional options.",
+      desc: "Begin and end your journey in comfort with polished, punctual airport transfers.",
     },
     {
-      title: "chauffeur services",
+      title: "wedding vehicles",
       icon: "/images/icon-service-4.svg",
-      desc: "Enhance your rental experience with additional options.",
+      desc: "Celebrate your special day with elegant vehicles and refined transport tailored to the occasion.",
     },
   ];
 
