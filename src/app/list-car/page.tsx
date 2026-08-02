@@ -341,6 +341,7 @@ export default function ListCarPage() {
                             <option value="sport">Sport Car</option>
                             <option value="sedan">Sedan Car</option>
                             <option value="convertible">Convertible Car</option>
+                            <option value="caravan">Caravan Hire</option>
                           </select>
                         </div>
 

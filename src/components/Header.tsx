@@ -125,6 +125,8 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 style={{ border: "none", cursor: "pointer" }}
                 aria-label="Toggle mobile menu"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
               >
                 <span className="slicknav_icon">
                   <span className="slicknav_icon-bar"></span>
@@ -139,72 +141,65 @@ export default function Header() {
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
           <div className="slicknav_menu d-block d-lg-none">
-            <ul className="slicknav_nav" role="menu" aria-hidden="false">
-              <li>
-                <Link href="/" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                  Home
+            <div id="mobile-navigation" className="slicknav_nav" role="menu" aria-hidden="false">
+              <div className="mobile-nav-section">
+                <p className="mobile-nav-label">Explore</p>
+                <Link className={pathname === "/" ? "is-active" : ""} href="/" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  <span>Home</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
                 </Link>
-              </li>
-              <li>
-                <Link href="/cars" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                  Our Fleets
+                <Link className={pathname === "/cars" ? "is-active" : ""} href="/cars" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  <span>Browse the Fleet</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
                 </Link>
-              </li>
-              <li>
-                <div style={{ padding: "10px 20px", fontWeight: 700, color: "var(--accent-color)" }}>List / Sell / RTO</div>
-                <ul style={{ listStyle: "none", paddingLeft: "20px" }}>
-                  <li>
-                    <Link href="/list-car" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                      List Your Car
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/list-car?mode=sell" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                      Sell Your Car
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/cars" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                      Rent to Own
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li>
                 <Link href="/#services" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
-                  Services
+                  <span>Premium Services</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
                 </Link>
-              </li>
+              </div>
+
+              <div className="mobile-nav-section">
+                <p className="mobile-nav-label">Vehicle solutions</p>
+                <Link className={pathname === "/list-car" ? "is-active" : ""} href="/list-car" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  <span>List Your Car</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
+                </Link>
+                <Link href="/list-car?mode=sell" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  <span>Sell Your Car</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
+                </Link>
+                <Link href="/cars" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                  <span>Rent to Own</span>
+                  <i className="fa-solid fa-arrow-right mobile-nav-arrow" aria-hidden="true" />
+                </Link>
+              </div>
+
+              <div className="mobile-nav-account">
               {user ? (
                 <>
-                  <li>
-                    <Link href="/dashboard" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
+                    <Link className="mobile-nav-account-link" href="/dashboard" role="menuitem" onClick={() => setMobileMenuOpen(false)}>
                       My Dashboard
                     </Link>
-                  </li>
-                  <li style={{ padding: "10px 20px" }}>
                     <button
                       onClick={handleLogout}
-                      className="btn-default btn-highlighted btn-no-overflow"
-                      style={{ display: "block", width: "100%", textAlign: "center", border: "none" }}
+                      className="mobile-nav-cta"
                     >
-                      Log Out
+                      <span>Log Out</span>
+                      <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
                     </button>
-                  </li>
                 </>
               ) : (
-                <li style={{ padding: "10px 20px" }}>
                   <Link
                     href="/auth"
-                    className="btn-default btn-no-overflow"
-                    style={{ display: "block", textAlign: "center" }}
+                    className="mobile-nav-cta"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Sign In
+                    <span>Sign In</span>
+                    <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
                   </Link>
-                </li>
               )}
-            </ul>
+              </div>
+            </div>
           </div>
         )}
       </div>

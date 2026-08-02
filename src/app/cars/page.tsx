@@ -10,6 +10,21 @@ import type { FleetCar } from "@/lib/fleet-data";
 import { useSearchParams } from "next/navigation";
 import BrandedLoader from "@/components/BrandedLoader";
 
+const vehicleTypes = [
+  { value: "all", label: "All Vehicles", icon: "fa-layer-group" },
+  { value: "luxury", label: "Luxury", icon: "fa-gem" },
+  { value: "sport", label: "Performance", icon: "fa-gauge-high" },
+  { value: "convertible", label: "Convertible", icon: "fa-wind" },
+  { value: "sedan", label: "Sedan", icon: "fa-car-side" },
+  { value: "caravan", label: "Caravan Hire", icon: "fa-caravan" },
+];
+
+const transmissionOptions = [
+  { value: "all", label: "Any" },
+  { value: "auto", label: "Automatic" },
+  { value: "manual", label: "Manual" },
+];
+
 function CarsContent() {
   const [mounted, setMounted] = useState(false);
   const [cars, setCars] = useState<FleetCar[]>([]);
@@ -70,16 +85,11 @@ function CarsContent() {
         {/* Filters Sidebar */}
         <div className="col-lg-3 mb-5">
           <FadeIn>
-            <div 
-              style={{
-                backgroundColor: "#fff",
-                borderRadius: "18px",
-                padding: "25px",
-                border: "1px solid var(--divider-color)",
-                boxShadow: "0px 5px 15px rgba(0,0,0,0.02)"
-              }}
-            >
-              <h3 style={{ fontSize: "20px", marginBottom: "20px", fontWeight: 700 }}>Filters</h3>
+            <div className="fleet-filter-panel">
+              <div className="fleet-filter-heading">
+                <h3>Find your perfect match</h3>
+                <p>Refine the collection around your journey.</p>
+              </div>
               
               {/* Search Bar */}
               <form onSubmit={handleSearchSubmit} className="mb-4">
@@ -111,42 +121,47 @@ function CarsContent() {
               </form>
 
               {/* Car Type */}
-              <div className="mb-4">
-                <h4 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "10px" }}>Car Type</h4>
-                <select 
-                  className="form-select"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                  style={{ borderRadius: "10px", border: "1px solid var(--divider-color)" }}
-                >
-                  <option value="all">All Types</option>
-                  <option value="sport">Sport Car</option>
-                  <option value="convertible">Convertible</option>
-                  <option value="sedan">Sedan Car</option>
-                  <option value="luxury">Luxury Car</option>
-                </select>
+              <div className="fleet-filter-group">
+                <h4>Vehicle style</h4>
+                <div className="vehicle-type-grid" role="group" aria-label="Vehicle style">
+                  {vehicleTypes.map((vehicleType) => (
+                    <button
+                      type="button"
+                      key={vehicleType.value}
+                      className={`vehicle-type-option ${type === vehicleType.value ? "is-selected" : ""}`}
+                      aria-pressed={type === vehicleType.value}
+                      onClick={() => setType(vehicleType.value)}
+                    >
+                      <i className={`fa-solid ${vehicleType.icon}`} aria-hidden="true" />
+                      <span>{vehicleType.label}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Transmission */}
-              <div className="mb-4">
-                <h4 style={{ fontSize: "15px", fontWeight: 600, marginBottom: "10px" }}>Transmission</h4>
-                <select 
-                  className="form-select"
-                  value={transmission}
-                  onChange={(e) => setTransmission(e.target.value)}
-                  style={{ borderRadius: "10px", border: "1px solid var(--divider-color)" }}
-                >
-                  <option value="all">All Transmissions</option>
-                  <option value="auto">Automatic</option>
-                  <option value="manual">Manual</option>
-                </select>
+              <div className="fleet-filter-group">
+                <h4>Transmission</h4>
+                <div className="transmission-toggle" role="group" aria-label="Transmission">
+                  {transmissionOptions.map((option) => (
+                    <button
+                      type="button"
+                      key={option.value}
+                      className={transmission === option.value ? "is-selected" : ""}
+                      aria-pressed={transmission === option.value}
+                      onClick={() => setTransmission(option.value)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Max Daily Price */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <h4 style={{ fontSize: "15px", fontWeight: 600, margin: 0 }}>Max Daily Rate</h4>
-                  <span style={{ fontSize: "14px", fontWeight: 700, color: "var(--accent-color)" }}>${maxPrice}</span>
+              <div className="fleet-filter-group fleet-rate-filter">
+                <div className="fleet-rate-heading">
+                  <h4>Maximum daily rate</h4>
+                  <span>${maxPrice}</span>
                 </div>
                 <input 
                   type="range" 
@@ -210,7 +225,7 @@ export default function CarsPage() {
         <div className="container">
           <h1 style={{ color: "#fff", fontSize: "48px", fontWeight: 700 }}>Our Fleets</h1>
           <p style={{ color: "#eee", fontSize: "16px", marginTop: "10px" }}>
-            Explore our extensive fleet and find the perfect car for your next journey
+            Discover premium vehicles, flexible ownership options, and specialist hire for every occasion.
           </p>
         </div>
       </div>

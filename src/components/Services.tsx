@@ -22,9 +22,9 @@ export default function Services() {
       desc: "Begin and end your journey in comfort with polished, punctual airport transfers.",
     },
     {
-      title: "wedding vehicles",
+      title: "wedding car hire",
       icon: "/images/icon-service-4.svg",
-      desc: "Celebrate your special day with elegant vehicles and refined transport tailored to the occasion.",
+      desc: "Arrive in style with beautifully presented vehicles for weddings and landmark celebrations.",
     },
   ];
 

@@ -149,4 +149,25 @@ describe("CarsPage Search Behavior", () => {
       search: "BMW",
     });
   });
+
+  it("should filter the fleet by Caravan Hire without opening a native select", async () => {
+    render(<CarsPage />);
+    await flushAllAsyncUpdates();
+
+    const caravanOption = screen.getByRole("button", { name: "Caravan Hire" });
+    expect(caravanOption.getAttribute("aria-pressed")).toBe("false");
+
+    await act(async () => {
+      fireEvent.click(caravanOption);
+    });
+    await flushAllAsyncUpdates();
+
+    expect(mockGetCarsAction).toHaveBeenLastCalledWith({
+      type: "caravan",
+      transmission: "all",
+      maxPrice: 500,
+      search: undefined,
+    });
+    expect(caravanOption.getAttribute("aria-pressed")).toBe("true");
+  });
 });
