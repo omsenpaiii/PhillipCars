@@ -215,7 +215,7 @@ function AuthFormContent() {
                           placeholder="+61 4XX XXX XXX"
                           inputMode="tel"
                           autoComplete="tel"
-                          pattern="(?:\+61|0)4[0-9 ]{8,11}"
+                          pattern="(?:\+61[ ]?|0)4[0-9 ]{8,11}"
                           title="Enter an Australian mobile number, such as +61 411 588 932"
                           style={{ borderRadius: "10px", height: "48px", border: "1px solid var(--divider-color)" }}
                         />
