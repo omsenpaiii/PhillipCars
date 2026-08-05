@@ -212,7 +212,11 @@ function AuthFormContent() {
                           type="tel"
                           name="phone"
                           className="form-control"
-                          placeholder="+1 (555) 019-2834"
+                          placeholder="+61 4XX XXX XXX"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          pattern="(?:\+61|0)4[0-9 ]{8,11}"
+                          title="Enter an Australian mobile number, such as +61 411 588 932"
                           style={{ borderRadius: "10px", height: "48px", border: "1px solid var(--divider-color)" }}
                         />
                       </div>
@@ -257,6 +261,8 @@ function AuthFormContent() {
                       className="form-control"
                       placeholder="••••••••"
                       required
+                      minLength={8}
+                      maxLength={128}
                       style={{ borderRadius: "10px", height: "48px", border: "1px solid var(--divider-color)" }}
                     />
                   </div>

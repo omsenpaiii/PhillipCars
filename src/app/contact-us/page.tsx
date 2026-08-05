@@ -12,7 +12,7 @@ const contactDetails = [
   {
     icon: "fa-solid fa-phone-volume",
     title: "call us",
-    value: "+61 3 9000 0142",
+    value: "+61 411 588 932",
   },
   {
     icon: "fa-solid fa-envelope",

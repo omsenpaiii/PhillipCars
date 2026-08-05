@@ -14,19 +14,19 @@ export default function HowItWorks() {
       key: "1",
       title: "browse and select",
       icon: "/images/icon-how-it-work-1.svg",
-      desc: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      desc: "Compare quality vehicles available for Melbourne city drives, airport transfers, business travel, and Victorian getaways.",
     },
     {
       key: "2",
       title: "book and confirm",
       icon: "/images/icon-how-it-work-2.svg",
-      desc: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      desc: "Choose your pickup point and travel dates, then review the vehicle details before confirming your booking.",
     },
     {
       key: "3",
-      title: "book and enjoy",
+      title: "collect and enjoy",
       icon: "/images/icon-how-it-work-3.svg",
-      desc: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      desc: "Collect your vehicle from your selected Melbourne or Victorian location and enjoy the road with confidence.",
     },
   ];
 
@@ -39,13 +39,12 @@ export default function HowItWorks() {
             <div className="how-work-content">
               {/* Section Title Start */}
               <div className="section-title">
-                <h3 className="wow fadeInUp">how it work</h3>
+                <h3 className="wow fadeInUp">how it works</h3>
                 <h2 className="text-anime-style-3" data-cursor="-opaque">
                   Streamlined processes for a hassle-free experience
                 </h2>
                 <p className="wow fadeInUp" data-wow-delay="0.25s">
-                  Our streamlined process ensures a seamless car rental experience from start to finish.
-                  With easy online booking, flexible pick-up and drop-off options.
+                  Browse, book, and collect with a clear process and flexible pickup options across Melbourne and Victoria.
                 </p>
               </div>
               {/* Section Title End */}
@@ -105,7 +104,7 @@ export default function HowItWorks() {
               <div className="trusted-client">
                 <div className="trusted-client-content">
                   <h3>
-                    <span className="counter">5</span>m+ Trusted world wide global clients
+                    Local support for Melbourne journeys and Victorian escapes
                   </h3>
                 </div>
                 <div className="trusted-client--image">

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { FadeIn, ScaleIn } from "./Motion";
 import Link from "next/link";
+import { MELBOURNE_LOCATIONS } from "@/lib/australia";
 
 export default function Hero() {
   const [carType, setCarType] = useState("");
@@ -31,17 +32,16 @@ export default function Hero() {
               <div className="hero-content">
                 <div className="section-title">
                   <FadeIn delay={0.1}>
-                    <h3 className="wow fadeInUp">welcome to car rent</h3>
+                    <h3 className="wow fadeInUp">Melbourne car hire, elevated</h3>
                   </FadeIn>
                   <FadeIn delay={0.25}>
                     <h1 className="text-anime-style-3" data-cursor="-opaque">
-                      Looking to save more on your rental car?
+                      Your next Melbourne journey starts here
                     </h1>
                   </FadeIn>
                   <FadeIn delay={0.4}>
                     <p className="wow fadeInUp">
-                      Whether you&apos;re planning a weekend getaway, a business trip, or just need a
-                      reliable ride for the day, we offers a wide range of vehicles to suit your needs.
+                      Discover quality vehicles for city days, airport transfers, coastal escapes, and business travel across Melbourne and Victoria.
                     </p>
                   </FadeIn>
                 </div>
@@ -79,6 +79,7 @@ export default function Hero() {
                         <h3>car type</h3>
                         <select
                           className="rent-details-form form-select"
+                          aria-label="Vehicle type"
                           value={carType}
                           onChange={(e) => setCarType(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
@@ -86,10 +87,11 @@ export default function Hero() {
                           <option value="" disabled>
                             Choose Car Type
                           </option>
-                          <option value="sport">sport car</option>
-                          <option value="convertible">convertible car</option>
-                          <option value="sedan">sedan car</option>
-                          <option value="luxury">luxury car</option>
+                          <option value="sport">Performance</option>
+                          <option value="convertible">Convertible</option>
+                          <option value="sedan">Sedan</option>
+                          <option value="luxury">Luxury</option>
+                          <option value="caravan">Caravan Hire</option>
                         </select>
                       </div>
                     </div>
@@ -104,6 +106,7 @@ export default function Hero() {
                         <h3>pickup location</h3>
                         <select
                           className="rent-details-form form-select"
+                          aria-label="Pickup location"
                           value={pickupLoc}
                           onChange={(e) => setPickupLoc(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
@@ -111,10 +114,9 @@ export default function Hero() {
                           <option value="" disabled>
                             Pick Up Location
                           </option>
-                          <option value="abu_dhabi">abu dhabi</option>
-                          <option value="alain">alain</option>
-                          <option value="dubai">dubai</option>
-                          <option value="sharjah">sharjah</option>
+                          {MELBOURNE_LOCATIONS.map((location) => (
+                            <option key={location.value} value={location.value}>{location.label}</option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -157,6 +159,7 @@ export default function Hero() {
                         <h3>Dropoff location</h3>
                         <select
                           className="rent-details-form form-select"
+                          aria-label="Drop-off location"
                           value={dropoffLoc}
                           onChange={(e) => setDropoffLoc(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
@@ -164,9 +167,9 @@ export default function Hero() {
                           <option value="" disabled>
                             Drop Off Location
                           </option>
-                          <option value="abu_dhabi">abu dhabi</option>
-                          <option value="alain">alain</option>
-                          <option value="sharjah">sharjah</option>
+                          {MELBOURNE_LOCATIONS.map((location) => (
+                            <option key={location.value} value={location.value}>{location.label}</option>
+                          ))}
                         </select>
                       </div>
                     </div>

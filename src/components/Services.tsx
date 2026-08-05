@@ -19,7 +19,7 @@ export default function Services() {
     {
       title: "airport transfers",
       icon: "/images/icon-service-3.svg",
-      desc: "Begin and end your journey in comfort with polished, punctual airport transfers.",
+      desc: "Travel smoothly with polished, punctual transfers to Melbourne and Avalon airports.",
     },
     {
       title: "wedding car hire",
@@ -40,7 +40,7 @@ export default function Services() {
               </FadeIn>
               <FadeIn delay={0.15}>
                 <h2 className="text-anime-style-3" data-cursor="-opaque">
-                  Explore our wide range of rental services
+                  Premium transport for every Melbourne occasion
                 </h2>
               </FadeIn>
             </div>
@@ -74,8 +74,7 @@ export default function Services() {
             {/* Service Box Footer Start */}
             <FadeIn delay={0.4} className="services-box-footer wow fadeInUp">
               <p>
-                Discover our range of car rental services designed to meet all your travel needs.
-                From a diverse fleet of vehicles to flexible rental plans.
+                From airport arrivals and executive travel to weddings and personal journeys, move through Melbourne in comfort.
               </p>
               <Link href="/cars" className="btn-default">
                 view all service

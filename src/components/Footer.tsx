@@ -29,7 +29,7 @@ export default function Footer() {
 
               {/* About Footer Content Start */}
               <div className="about-footer-content">
-                <p>Experience the ease and convenience of renting a car with PhillipCars.</p>
+                <p>Premium vehicle hire, ownership pathways, and local support across Melbourne and Victoria.</p>
               </div>
               {/* About Footer Content End */}
             </div>

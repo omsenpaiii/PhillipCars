@@ -6988,3 +6988,154 @@ header.main-header .header-sticky.active{
     transition: none;
   }
 }
+
+/* Melbourne coverage */
+.melbourne-coverage {
+  padding: 100px 0;
+  background: #fff;
+}
+
+.melbourne-coverage-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  min-height: 520px;
+  overflow: hidden;
+  border: 1px solid rgba(31, 31, 31, 0.08);
+  border-radius: 32px;
+  background: #f8f6f3;
+  box-shadow: 0 24px 70px rgba(25, 25, 25, 0.08);
+}
+
+.melbourne-coverage-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px;
+}
+
+.melbourne-coverage-content .section-title {
+  margin-bottom: 30px;
+}
+
+.melbourne-coverage-content .section-title h2 {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.08;
+}
+
+.coverage-locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+
+.coverage-locations span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid rgba(31, 31, 31, 0.09);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.coverage-locations i {
+  color: var(--accent-color);
+}
+
+.melbourne-coverage-content .btn-default {
+  align-self: flex-start;
+}
+
+.melbourne-coverage-map {
+  position: relative;
+  min-height: 520px;
+  background: #e7e3dd;
+}
+
+.melbourne-coverage-map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  border: 0;
+  filter: saturate(0.72) contrast(1.04);
+}
+
+.coverage-map-badge {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  background: rgba(18, 18, 18, 0.9);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  backdrop-filter: blur(12px);
+}
+
+.coverage-map-badge span {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.coverage-map-badge strong {
+  margin-top: 4px;
+  color: #fff;
+  font-size: 16px;
+}
+
+@media (max-width: 991px) {
+  .melbourne-coverage {
+    padding: 80px 0;
+  }
+
+  .melbourne-coverage-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .melbourne-coverage-content {
+    padding: 48px;
+  }
+
+  .melbourne-coverage-map,
+  .melbourne-coverage-map iframe {
+    min-height: 430px;
+  }
+}
+
+@media (max-width: 767px) {
+  .melbourne-coverage {
+    padding: 60px 0;
+  }
+
+  .melbourne-coverage-shell {
+    border-radius: 22px;
+  }
+
+  .melbourne-coverage-content {
+    padding: 34px 24px 38px;
+  }
+
+  .melbourne-coverage-content .section-title h2 {
+    font-size: 32px;
+  }
+
+  .melbourne-coverage-map,
+  .melbourne-coverage-map iframe {
+    min-height: 340px;
+  }
+
+  .coverage-map-badge {
+    right: 16px;
+    bottom: 16px;
+  }
+}

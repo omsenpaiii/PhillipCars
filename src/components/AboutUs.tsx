@@ -41,13 +41,12 @@ export default function AboutUs() {
                 </FadeIn>
                 <FadeIn delay={0.2}>
                   <h2 className="text-anime-style-3" data-cursor="-opaque">
-                    Your trusted partner in reliable car rental
+                    Melbourne car hire with a more personal standard
                   </h2>
                 </FadeIn>
                 <FadeIn delay={0.3}>
                   <p className="wow fadeInUp">
-                    Aqestic Optio Amet A Ququam Saepe Aliquid Voluate Dicta Fuga Dolor Saerror Sed Earum
-                    A Magni Soluta Quam Minus Dolor Dolor
+                    PhillipCars connects Melbourne drivers with quality vehicles, flexible rental options, and attentive local support across Victoria.
                   </p>
                 </FadeIn>
               </div>
@@ -63,8 +62,7 @@ export default function AboutUs() {
                   <div className="trusted-booking-content">
                     <h3>easy booking process</h3>
                     <p>
-                      We Have Optimized The Booking Process So That Our Clients Can Experience The
-                      Easiest And The Safest Service
+                      Choose your vehicle, Melbourne pickup point, and travel dates through one clear, straightforward booking experience.
                     </p>
                   </div>
                 </FadeIn>
@@ -78,8 +76,7 @@ export default function AboutUs() {
                   <div className="trusted-booking-content">
                     <h3>convenient pick-up & return process</h3>
                     <p>
-                      We Have Optimized The Booking Process So That Our Clients Can Experience The
-                      Easiest And The Safest Service
+                      Collect and return from convenient metropolitan, airport, and regional locations that work around your plans.
                     </p>
                   </div>
                 </FadeIn>

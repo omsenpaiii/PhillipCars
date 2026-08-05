@@ -7,6 +7,7 @@ import { FadeIn, SlideIn } from "./Motion";
 import Link from "next/link";
 import type { FleetCar } from "@/lib/fleet-data";
 import type { SessionUser } from "@/lib/auth";
+import { DEFAULT_MELBOURNE_LOCATION, MELBOURNE_LOCATIONS } from "@/lib/australia";
 
 interface CarDetailClientProps {
   car: FleetCar;
@@ -27,8 +28,8 @@ function getDefaultBookingDates() {
 export default function CarDetailClient({ car, user }: CarDetailClientProps) {
   const defaultDates = useMemo(() => getDefaultBookingDates(), []);
   const [bookingType, setBookingType] = useState<"rent" | "rent_to_own">("rent");
-  const [pickupLoc, setPickupLoc] = useState("dubai");
-  const [returnLoc, setReturnLoc] = useState("dubai");
+  const [pickupLoc, setPickupLoc] = useState<string>(DEFAULT_MELBOURNE_LOCATION);
+  const [returnLoc, setReturnLoc] = useState<string>(DEFAULT_MELBOURNE_LOCATION);
   const [pickupDate, setPickupDate] = useState(defaultDates.pickup);
   const [returnDate, setReturnDate] = useState(defaultDates.returnDate);
   
@@ -307,14 +308,14 @@ export default function CarDetailClient({ car, user }: CarDetailClientProps) {
                     </label>
                     <select 
                       className="form-select"
+                      aria-label="Pickup location"
                       value={pickupLoc}
                       onChange={(e) => setPickupLoc(e.target.value)}
                       style={{ borderRadius: "10px" }}
                     >
-                      <option value="dubai">Dubai International Airport</option>
-                      <option value="abu_dhabi">Abu Dhabi Mall</option>
-                      <option value="alain">Al Ain City Center</option>
-                      <option value="sharjah">Sharjah Airport</option>
+                      {MELBOURNE_LOCATIONS.map((location) => (
+                        <option key={location.value} value={location.value}>{location.label}</option>
+                      ))}
                     </select>
                   </div>
 
@@ -325,14 +326,14 @@ export default function CarDetailClient({ car, user }: CarDetailClientProps) {
                     </label>
                     <select 
                       className="form-select"
+                      aria-label="Return location"
                       value={returnLoc}
                       onChange={(e) => setReturnLoc(e.target.value)}
                       style={{ borderRadius: "10px" }}
                     >
-                      <option value="dubai">Dubai International Airport</option>
-                      <option value="abu_dhabi">Abu Dhabi Mall</option>
-                      <option value="alain">Al Ain City Center</option>
-                      <option value="sharjah">Sharjah Airport</option>
+                      {MELBOURNE_LOCATIONS.map((location) => (
+                        <option key={location.value} value={location.value}>{location.label}</option>
+                      ))}
                     </select>
                   </div>
 

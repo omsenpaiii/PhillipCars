@@ -337,10 +337,10 @@ export default function ListCarPage() {
                             required={step === 1}
                             style={{ borderRadius: "10px", height: "48px" }}
                           >
-                            <option value="luxury">Luxury Car</option>
-                            <option value="sport">Sport Car</option>
-                            <option value="sedan">Sedan Car</option>
-                            <option value="convertible">Convertible Car</option>
+                            <option value="luxury">Luxury</option>
+                            <option value="sport">Performance</option>
+                            <option value="sedan">Sedan</option>
+                            <option value="convertible">Convertible</option>
                             <option value="caravan">Caravan Hire</option>
                           </select>
                         </div>

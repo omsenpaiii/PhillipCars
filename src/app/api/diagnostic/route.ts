@@ -5,13 +5,10 @@ import { getCarsAction } from "@/app/actions/cars";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const diagnostic: any = {
+  const diagnostic: Record<string, unknown> = {
     timestamp: new Date().toISOString(),
     env: {
       has_database_url: !!process.env.DATABASE_URL,
-      database_url_masked: process.env.DATABASE_URL
-        ? process.env.DATABASE_URL.replace(/:[^:@]+@/, ":****@")
-        : null,
       node_env: process.env.NODE_ENV,
     },
     connection: null,
@@ -29,16 +26,15 @@ export async function GET() {
       latency_ms: Date.now() - start,
       time: testRes.rows[0],
     };
-  } catch (err: any) {
+  } catch {
     diagnostic.connection = {
       success: false,
-      error: err.message || String(err),
-      stack: err.stack,
+      error: "Database connection failed.",
     };
   }
 
   // 2. Table and count check
-  if (diagnostic.connection?.success) {
+  if (typeof diagnostic.connection === "object" && diagnostic.connection !== null && "success" in diagnostic.connection && diagnostic.connection.success) {
     try {
       const tableCheck = await query(`
         SELECT EXISTS (
@@ -54,9 +50,9 @@ export async function GET() {
         const countRes = await query("SELECT count(*) FROM public.cars");
         diagnostic.cars_count = parseInt(countRes.rows[0]?.count || "0");
       }
-    } catch (err: any) {
+    } catch {
       diagnostic.table_check = {
-        error: err.message || String(err),
+        error: "Table check failed.",
       };
     }
   }
@@ -65,9 +61,9 @@ export async function GET() {
   try {
     const actionRes = await getCarsAction();
     diagnostic.cars_action_result = actionRes;
-  } catch (err: any) {
+  } catch {
     diagnostic.cars_action_result = {
-      error: err.message || String(err),
+      error: "Cars action failed.",
     };
   }
 

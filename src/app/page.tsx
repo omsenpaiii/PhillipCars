@@ -16,6 +16,7 @@ import CTA from "@/components/CTA";
 import Articles from "@/components/Articles";
 import Footer from "@/components/Footer";
 import BrandedLoader from "@/components/BrandedLoader";
+import MelbourneCoverage from "@/components/MelbourneCoverage";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -50,6 +51,7 @@ export default function Home() {
             <HowItWorks />
             <IntroVideo />
             <WhyChooseUs />
+            <MelbourneCoverage />
             <FAQs />
             <Testimonials />
             <CTA />

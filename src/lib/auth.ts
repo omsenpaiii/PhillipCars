@@ -2,8 +2,17 @@ import crypto from "crypto";
 import { cookies } from "next/headers";
 import { query } from "./db";
 
-const JWT_SECRET = process.env.JWT_SECRET || "phillipcars_secret_key_2026_omtomar";
 const COOKIE_NAME = "phillipcars_session";
+const PASSWORD_ITERATIONS = 210_000;
+const PASSWORD_KEY_LENGTH = 64;
+
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret && process.env.NODE_ENV === "production") {
+    throw new Error("JWT_SECRET is required in production.");
+  }
+  return secret || "phillipcars_local_development_only";
+}
 
 export interface SessionPayload {
   userId: string;
@@ -20,22 +29,37 @@ export interface SessionUser {
 
 export function hashPassword(password: string): string {
   const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
-  return `${salt}:${hash}`;
+  const hash = crypto.pbkdf2Sync(password, salt, PASSWORD_ITERATIONS, PASSWORD_KEY_LENGTH, "sha512").toString("hex");
+  return `pbkdf2_sha512:${PASSWORD_ITERATIONS}:${salt}:${hash}`;
 }
 
 export function verifyPassword(password: string, storedHash: string): boolean {
-  if (!storedHash || !storedHash.includes(":")) return false;
-  const [salt, hash] = storedHash.split(":");
-  const testHash = crypto.pbkdf2Sync(password, salt, 1000, 64, "sha512").toString("hex");
-  return testHash === hash;
+  if (!storedHash) return false;
+
+  const parts = storedHash.split(":");
+  const isCurrentFormat = parts.length === 4 && parts[0] === "pbkdf2_sha512";
+  const iterations = isCurrentFormat ? Number(parts[1]) : 1000;
+  const salt = isCurrentFormat ? parts[2] : parts[0];
+  const hash = isCurrentFormat ? parts[3] : parts[1];
+
+  if (!salt || !hash || !Number.isInteger(iterations) || iterations < 1) return false;
+
+  const expectedHash = Buffer.from(hash, "hex");
+  const testHash = crypto.pbkdf2Sync(password, salt, iterations, expectedHash.length, "sha512");
+  return expectedHash.length === testHash.length && crypto.timingSafeEqual(expectedHash, testHash);
+}
+
+export function passwordNeedsUpgrade(storedHash: string): boolean {
+  const parts = storedHash.split(":");
+  return parts.length !== 4 || parts[0] !== "pbkdf2_sha512" || Number(parts[1]) < PASSWORD_ITERATIONS;
 }
 
 export function signToken(payload: SessionPayload): string {
+  const jwtSecret = getJwtSecret();
   const header = Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url");
   const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
   const signature = crypto
-    .createHmac("sha256", JWT_SECRET)
+    .createHmac("sha256", jwtSecret)
     .update(`${header}.${data}`)
     .digest("base64url");
   return `${header}.${data}.${signature}`;
@@ -43,14 +67,20 @@ export function signToken(payload: SessionPayload): string {
 
 export function verifyToken(token: string): SessionPayload | null {
   try {
+    const jwtSecret = getJwtSecret();
     const parts = token.split(".");
     if (parts.length !== 3) return null;
     const [header, data, signature] = parts;
     const testSig = crypto
-      .createHmac("sha256", JWT_SECRET)
+      .createHmac("sha256", jwtSecret)
       .update(`${header}.${data}`)
       .digest("base64url");
-    if (testSig !== signature) return null;
+    const actualSignature = Buffer.from(signature);
+    const expectedSignature = Buffer.from(testSig);
+    if (
+      actualSignature.length !== expectedSignature.length ||
+      !crypto.timingSafeEqual(actualSignature, expectedSignature)
+    ) return null;
 
     const payload = JSON.parse(Buffer.from(data, "base64url").toString("utf8")) as Partial<SessionPayload>;
     if (payload.exp && Date.now() > payload.exp) return null;

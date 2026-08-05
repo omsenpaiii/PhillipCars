@@ -15,8 +15,8 @@ const epilogue = Epilogue({
 });
 
 export const metadata: Metadata = {
-  title: "PhillipCars - Premium Car Rent & Rent-to-Own",
-  description: "Experience the ease and convenience of renting or owning a car with PhillipCars. We offer a wide range of vehicles to suit your needs.",
+  title: "PhillipCars | Premium Car Hire in Melbourne",
+  description: "Premium car hire, rent-to-own options, and vehicle listings across Melbourne and Victoria, Australia.",
   icons: {
     icon: "/images/favicon.png",
   }
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${epilogue.variable}`}>
+    <html lang="en-AU" className={`${dmSans.variable} ${epilogue.variable}`}>
       <body>
         <MagicCursor />
         {children}

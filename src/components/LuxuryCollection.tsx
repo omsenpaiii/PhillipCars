@@ -3,22 +3,26 @@ import Link from "next/link";
 export default function LuxuryCollection() {
   const collections = [
     {
-      title: "sport car",
+      title: "performance",
+      type: "sport",
       image: "/images/luxury-collection-img-1.jpg",
       delay: "0s",
     },
     {
-      title: "convertible car",
+      title: "convertible",
+      type: "convertible",
       image: "/images/luxury-collection-img-2.jpg",
       delay: "0.25s",
     },
     {
-      title: "sedan car",
+      title: "sedan",
+      type: "sedan",
       image: "/images/luxury-collection-img-3.jpg",
       delay: "0.5s",
     },
     {
-      title: "luxury car",
+      title: "luxury",
+      type: "luxury",
       image: "/images/luxury-collection-img-4.jpg",
       delay: "0.75s",
     },
@@ -31,7 +35,6 @@ export default function LuxuryCollection() {
           <div className="col-lg-12">
             <div className="luxury-collection-box">
               {collections.map((item, idx) => {
-                const categoryType = item.title.split(" ")[0];
                 return (
                   /* Luxury Collection Item Start */
                   <div
@@ -41,7 +44,7 @@ export default function LuxuryCollection() {
                   >
                     {/* Luxury Collection Image Start */}
                     <div className="luxury-collection-image" data-cursor-text="View">
-                      <Link href={`/cars?type=${categoryType}`}>
+                      <Link href={`/cars?type=${item.type}`}>
                         <figure className="image-anime">
                           <img src={item.image} alt={item.title} />
                         </figure>
@@ -57,7 +60,7 @@ export default function LuxuryCollection() {
 
                     {/* Luxury Collection Btn Start */}
                     <div className="luxury-collection-btn">
-                      <Link href={`/cars?type=${categoryType}`} className="section-icon-btn">
+                      <Link href={`/cars?type=${item.type}`} className="section-icon-btn">
                         <img src="/images/arrow-white.svg" alt="Arrow" />
                       </Link>
                     </div>

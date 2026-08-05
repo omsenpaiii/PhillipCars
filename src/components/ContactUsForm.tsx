@@ -81,8 +81,10 @@ export default function ContactUsForm() {
               <input
                 id="contact-phone"
                 type="tel"
+                inputMode="tel"
+                autoComplete="tel"
                 className="form-control"
-                placeholder="Your phone"
+                placeholder="+61 4XX XXX XXX"
                 value={form.phone}
                 onChange={(event) => updateField("phone", event.target.value)}
               />

@@ -13,17 +13,17 @@ export default function FAQs() {
     {
       key: "1",
       question: "What do I need to rent a car?",
-      answer: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      answer: "You’ll generally need a current driver licence valid in Victoria, proof of identity, and the payment method required for your booking. Individual vehicle requirements may vary.",
     },
     {
       key: "2",
       question: "How old do I need to be to rent a car?",
-      answer: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      answer: "Age and licence requirements can vary by vehicle and provider. Review the listing details before booking, particularly for premium and performance vehicles.",
     },
     {
       key: "3",
       question: "Can I rent a car with a debit card?",
-      answer: "Explore our diverse selection of high-end vehicles, choose your preferred pickup and return dates, and select a location that best fits your needs.",
+      answer: "Accepted payment methods depend on the vehicle and booking terms. Confirm the available options during checkout or contact our Melbourne support team before booking.",
     },
   ];
 
