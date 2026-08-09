@@ -17,6 +17,8 @@ function AuthFormContent() {
     isRegistered ? "Account created successfully! Please login." : null
   );
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [capsLockOn, setCapsLockOn] = useState(false);
   const router = useRouter();
   const redirectTo = searchParams.get("redirect") || "/dashboard";
 
@@ -61,7 +63,7 @@ function AuthFormContent() {
 
   return (
     <div
-      className="bg-section"
+      className="bg-section auth-section"
       style={{
         margin: "120px auto 60px",
         padding: "80px 0",
@@ -76,6 +78,7 @@ function AuthFormContent() {
           <div className="col-lg-5 col-md-8">
             <ScaleIn>
               <div
+                className="auth-card"
                 style={{
                   backgroundColor: "#fff",
                   borderRadius: "24px",
@@ -86,6 +89,9 @@ function AuthFormContent() {
               >
                 {/* Tabs */}
                 <div
+                  role="tablist"
+                  aria-label="Account access"
+                  className="auth-tabs"
                   style={{
                     display: "flex",
                     marginBottom: "30px",
@@ -94,8 +100,13 @@ function AuthFormContent() {
                   }}
                 >
                   <button
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === "login"}
+                    aria-controls="auth-form-panel"
                     onClick={() => {
                       setTab("login");
+                      setShowPassword(false);
                       setError(null);
                       setSuccess(null);
                     }}
@@ -116,8 +127,13 @@ function AuthFormContent() {
                     Login
                   </button>
                   <button
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === "signup"}
+                    aria-controls="auth-form-panel"
                     onClick={() => {
                       setTab("signup");
+                      setShowPassword(false);
                       setError(null);
                       setSuccess(null);
                     }}
@@ -154,6 +170,7 @@ function AuthFormContent() {
                 {/* Message Banners */}
                 {error && (
                   <div
+                    role="alert"
                     className="alert alert-danger text-center"
                     style={{ borderRadius: "12px", fontSize: "14px", padding: "12px" }}
                   >
@@ -164,6 +181,8 @@ function AuthFormContent() {
 
                 {success && (
                   <div
+                    role="status"
+                    aria-live="polite"
                     className="alert alert-success text-center"
                     style={{ borderRadius: "12px", fontSize: "14px", padding: "12px" }}
                   >
@@ -173,11 +192,19 @@ function AuthFormContent() {
                 )}
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="mt-4">
+                <form
+                  id="auth-form-panel"
+                  role="tabpanel"
+                  aria-label={tab === "login" ? "Login form" : "Create account form"}
+                  aria-busy={loading}
+                  onSubmit={handleSubmit}
+                  className="mt-4"
+                >
                   {tab === "signup" && (
                     <>
                       <div className="form-group mb-3">
                         <label
+                          htmlFor="auth-full-name"
                           style={{
                             fontSize: "14px",
                             fontWeight: 600,
@@ -188,8 +215,10 @@ function AuthFormContent() {
                           Full Name
                         </label>
                         <input
+                          id="auth-full-name"
                           type="text"
                           name="fullName"
+                          autoComplete="name"
                           className="form-control"
                           placeholder="John Doe"
                           required
@@ -199,6 +228,7 @@ function AuthFormContent() {
 
                       <div className="form-group mb-3">
                         <label
+                          htmlFor="auth-phone"
                           style={{
                             fontSize: "14px",
                             fontWeight: 600,
@@ -209,6 +239,7 @@ function AuthFormContent() {
                           Phone Number
                         </label>
                         <input
+                          id="auth-phone"
                           type="tel"
                           name="phone"
                           className="form-control"
@@ -225,6 +256,7 @@ function AuthFormContent() {
 
                   <div className="form-group mb-3">
                     <label
+                      htmlFor="auth-email"
                       style={{
                         fontSize: "14px",
                         fontWeight: 600,
@@ -235,8 +267,13 @@ function AuthFormContent() {
                       Email Address
                     </label>
                     <input
+                      id="auth-email"
                       type="email"
                       name="email"
+                      autoComplete="email"
+                      inputMode="email"
+                      autoCapitalize="none"
+                      spellCheck={false}
                       className="form-control"
                       placeholder="email@example.com"
                       required
@@ -246,6 +283,7 @@ function AuthFormContent() {
 
                   <div className="form-group mb-4">
                     <label
+                      htmlFor="auth-password"
                       style={{
                         fontSize: "14px",
                         fontWeight: 600,
@@ -255,21 +293,51 @@ function AuthFormContent() {
                     >
                       Password
                     </label>
-                    <input
-                      type="password"
-                      name="password"
-                      className="form-control"
-                      placeholder="••••••••"
-                      required
-                      minLength={8}
-                      maxLength={128}
-                      style={{ borderRadius: "10px", height: "48px", border: "1px solid var(--divider-color)" }}
-                    />
+                    <div className="auth-password-field">
+                      <input
+                        id="auth-password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        className="form-control"
+                        placeholder="••••••••"
+                        autoComplete={tab === "login" ? "current-password" : "new-password"}
+                        aria-describedby={tab === "signup" ? "auth-password-hint" : undefined}
+                        required
+                        minLength={8}
+                        maxLength={128}
+                        onKeyUp={(event) => setCapsLockOn(event.getModifierState("CapsLock"))}
+                        onBlur={() => setCapsLockOn(false)}
+                      />
+                      <button
+                        type="button"
+                        className="auth-password-toggle"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-pressed={showPassword}
+                        title={showPassword ? "Hide password" : "Show password"}
+                        onClick={() => setShowPassword((visible) => !visible)}
+                      >
+                        <i
+                          className={`fa-regular ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
+                    {tab === "signup" && (
+                      <p id="auth-password-hint" className="auth-field-hint">
+                        Use at least 8 characters.
+                      </p>
+                    )}
+                    {capsLockOn && (
+                      <p className="auth-caps-warning" role="status">
+                        Caps Lock is on
+                      </p>
+                    )}
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
+                    aria-disabled={loading}
                     className="btn-default btn-no-overflow w-100"
                     style={{
                       height: "52px",
@@ -279,7 +347,12 @@ function AuthFormContent() {
                       cursor: loading ? "not-allowed" : "pointer",
                     }}
                   >
-                    {loading ? "Processing..." : tab === "login" ? "Sign In" : "Register"}
+                    {loading ? (
+                      <>
+                        <span className="auth-button-spinner" aria-hidden="true" />
+                        {tab === "login" ? "Signing in…" : "Creating account…"}
+                      </>
+                    ) : tab === "login" ? "Sign In" : "Create Account"}
                   </button>
                 </form>
               </div>
