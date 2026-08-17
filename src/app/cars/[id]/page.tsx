@@ -8,9 +8,10 @@ import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function CarDetailPage({ params }: PageProps) {
+export default async function CarDetailPage({ params, searchParams }: PageProps) {
   const { id } = await params;
   
   // Fetch data on the server
@@ -20,12 +21,13 @@ export default async function CarDetailPage({ params }: PageProps) {
   }
 
   const user = await getCurrentUserAction();
+  const query = await searchParams;
 
   return (
     <>
       <Header />
       <main style={{ marginTop: "120px" }}>
-        <CarDetailClient car={carRes.car} user={user} />
+        <CarDetailClient car={carRes.car} user={user} initialSearch={query} />
       </main>
       <Footer />
     </>

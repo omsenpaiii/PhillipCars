@@ -46,7 +46,7 @@ export default function AboutUs() {
                 </FadeIn>
                 <FadeIn delay={0.3}>
                   <p className="wow fadeInUp">
-                    PhillipCars connects Melbourne drivers with quality vehicles, flexible rental options, and attentive local support across Victoria.
+                    Zoomli connects Melbourne drivers with quality vehicles, flexible rental options, and attentive local support across Victoria.
                   </p>
                 </FadeIn>
               </div>

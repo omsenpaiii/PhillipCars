@@ -11,7 +11,7 @@ export default function Testimonials() {
       role: "small business owner",
       image: "/images/author-1.jpg",
       rating: 5,
-      comment: "I needed a clean, reliable sedan for client meetings across Melbourne, and PhillipCars made the whole process simple from booking to return.",
+      comment: "I needed a clean, reliable sedan for client meetings across Melbourne, and Zoomli made the whole process simple from booking to return.",
     },
     {
       name: "annette black",

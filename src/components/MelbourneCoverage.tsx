@@ -15,7 +15,7 @@ export default function MelbourneCoverage() {
               </p>
             </div>
 
-            <div className="coverage-locations" aria-label="Popular PhillipCars locations">
+            <div className="coverage-locations" aria-label="Popular Zoomli locations">
               {MELBOURNE_LOCATIONS.slice(0, 6).map((location) => (
                 <span key={location.value}>
                   <i className="fa-solid fa-location-dot" aria-hidden="true" />
@@ -31,7 +31,7 @@ export default function MelbourneCoverage() {
 
           <div className="melbourne-coverage-map">
             <iframe
-              title="PhillipCars Melbourne and Victoria service area"
+              title="Zoomli Melbourne and Victoria service area"
               src="https://www.google.com/maps?q=Melbourne%20Victoria%20Australia&z=9&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

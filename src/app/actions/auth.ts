@@ -9,6 +9,7 @@ type AuthActionState = { success?: boolean; error?: string } | null;
 interface ProfilePasswordRow {
   id: string;
   password_hash: string;
+  session_version: number;
 }
 
 function normalizeEmail(value: FormDataEntryValue | null): string {
@@ -71,7 +72,7 @@ export async function signInAction(_prevState: AuthActionState, formData: FormDa
   }
 
   try {
-    const res = await query<ProfilePasswordRow>("SELECT id, password_hash FROM public.profiles WHERE lower(btrim(email)) = $1", [email]);
+    const res = await query<ProfilePasswordRow>("SELECT id, password_hash, session_version FROM public.profiles WHERE lower(btrim(email)) = $1", [email]);
     if (res.rows.length === 0) {
       return { error: "Invalid email or password." };
     }
@@ -86,7 +87,7 @@ export async function signInAction(_prevState: AuthActionState, formData: FormDa
       await query("UPDATE public.profiles SET password_hash = $1 WHERE id = $2", [hashPassword(password), user.id]);
     }
 
-    await createSession(user.id);
+    await createSession(user.id, user.session_version ?? 0);
     return { success: true };
   } catch (err: unknown) {
     console.error("Sign in error:", err);

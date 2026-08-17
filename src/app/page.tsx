@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <>
       {/* Preloader Start */}
-      {loading && <BrandedLoader label="Loading PhillipCars..." />}
+      {loading && <BrandedLoader label="Loading Zoomli..." />}
       {/* Preloader End */}
 
       {/* Main Layout */}

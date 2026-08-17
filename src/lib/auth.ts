@@ -17,6 +17,7 @@ function getJwtSecret(): string {
 export interface SessionPayload {
   userId: string;
   exp: number;
+  sessionVersion: number;
 }
 
 export interface SessionUser {
@@ -85,15 +86,15 @@ export function verifyToken(token: string): SessionPayload | null {
     const payload = JSON.parse(Buffer.from(data, "base64url").toString("utf8")) as Partial<SessionPayload>;
     if (payload.exp && Date.now() > payload.exp) return null;
     if (!payload.userId || !payload.exp) return null;
-    return { userId: payload.userId, exp: payload.exp };
+    return { userId: payload.userId, exp: payload.exp, sessionVersion: payload.sessionVersion ?? 0 };
   } catch {
     return null;
   }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(userId: string, sessionVersion = 0) {
   const exp = Date.now() + 7 * 24 * 60 * 60 * 1000; // 7 days
-  const token = signToken({ userId, exp });
+  const token = signToken({ userId, exp, sessionVersion });
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
@@ -118,12 +119,14 @@ export async function getSessionUser(): Promise<SessionUser | null> {
   if (!payload || !payload.userId) return null;
 
   try {
-    const res = await query<SessionUser>(
-      "SELECT id, email, full_name, phone, created_at FROM public.profiles WHERE id = $1",
+    const res = await query<SessionUser & { session_version: number }>(
+      "SELECT id, email, full_name, phone, created_at, session_version FROM public.profiles WHERE id = $1",
       [payload.userId]
     );
     if (res.rows.length === 0) return null;
-    return res.rows[0];
+    const user = res.rows[0];
+    if (payload.sessionVersion !== user.session_version) return null;
+    return user;
   } catch (err) {
     console.error("Error fetching session user:", err);
     return null;

@@ -351,7 +351,7 @@ export default function DashboardPage() {
                       <i className="fa-solid fa-car mb-3" style={{ fontSize: "48px", color: "#ccc" }}></i>
                       <h3>No Vehicles Listed</h3>
                       <p style={{ color: "var(--text-color)" }}>
-                        You haven&apos;t listed any vehicles yet. List your car on PhillipCars to start earning!
+                        You haven&apos;t listed any vehicles yet. List your car on Zoomli to start earning!
                       </p>
                     </div>
                   ) : (

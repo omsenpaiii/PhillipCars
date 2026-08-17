@@ -8,22 +8,17 @@ export default function BrandLogo({ variant = "dark", size = "md" }: BrandLogoPr
   const darkColor = variant === "light" ? "#ffffff" : "var(--primary-color)";
 
   return (
-    <span className="brand-logo" aria-label="Phillip Cars">
+    <span className="brand-logo" aria-label="Zoomli">
       <span
         style={{
           color: "var(--accent-color)",
           fontSize,
         }}
       >
-        PHILLIP
+        ZOOM
       </span>
-      <span
-        style={{
-          color: darkColor,
-          fontSize,
-        }}
-      >
-        CARS
+      <span style={{ color: darkColor, fontSize }}>
+        LI
       </span>
     </span>
   );

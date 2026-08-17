@@ -8,10 +8,12 @@ import Link from "next/link";
 import type { FleetCar } from "@/lib/fleet-data";
 import type { SessionUser } from "@/lib/auth";
 import { DEFAULT_MELBOURNE_LOCATION, MELBOURNE_LOCATIONS } from "@/lib/australia";
+import { parseVehicleSearch } from "@/lib/vehicle-search";
 
 interface CarDetailClientProps {
   car: FleetCar;
   user: SessionUser | null;
+  initialSearch?: Record<string, string | string[] | undefined>;
 }
 
 function getDefaultBookingDates() {
@@ -25,13 +27,14 @@ function getDefaultBookingDates() {
   };
 }
 
-export default function CarDetailClient({ car, user }: CarDetailClientProps) {
+export default function CarDetailClient({ car, user, initialSearch = {} }: CarDetailClientProps) {
   const defaultDates = useMemo(() => getDefaultBookingDates(), []);
+  const journey = useMemo(() => parseVehicleSearch(new URLSearchParams(Object.entries(initialSearch).flatMap(([key, value]) => typeof value === "string" ? [[key, value]] : []))), [initialSearch]);
   const [bookingType, setBookingType] = useState<"rent" | "rent_to_own">("rent");
-  const [pickupLoc, setPickupLoc] = useState<string>(DEFAULT_MELBOURNE_LOCATION);
-  const [returnLoc, setReturnLoc] = useState<string>(DEFAULT_MELBOURNE_LOCATION);
-  const [pickupDate, setPickupDate] = useState(defaultDates.pickup);
-  const [returnDate, setReturnDate] = useState(defaultDates.returnDate);
+  const [pickupLoc, setPickupLoc] = useState<string>(journey.pickup || DEFAULT_MELBOURNE_LOCATION);
+  const [returnLoc, setReturnLoc] = useState<string>(journey.dropoff || DEFAULT_MELBOURNE_LOCATION);
+  const [pickupDate, setPickupDate] = useState(journey.pickupDate || defaultDates.pickup);
+  const [returnDate, setReturnDate] = useState(journey.returnDate || defaultDates.returnDate);
   
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -181,9 +184,7 @@ export default function CarDetailClient({ car, user }: CarDetailClientProps) {
                 <span style={{ fontSize: "14px", color: "var(--accent-color)", fontWeight: 700 }}>
                   <i className="fa-solid fa-circle-check me-1"></i> No Credit Check Required
                 </span>
-                <span style={{ fontSize: "14px", color: "var(--accent-color)", fontWeight: 700 }}>
-                  <i className="fa-solid fa-circle-check me-1"></i> Full Comprehensive Insurance
-                </span>
+                <span style={{ fontSize: "14px", color: "var(--accent-color)", fontWeight: 700 }}><i className="fa-solid fa-circle-check me-1"></i> Terms confirmed before hire</span>
               </div>
             </div>
 

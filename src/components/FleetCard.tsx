@@ -4,16 +4,18 @@ import type { FleetCar } from "@/lib/fleet-data";
 interface FleetCardProps {
   car: FleetCar;
   showRentToOwn?: boolean;
+  searchParams?: string;
 }
 
 function formatMoney(value: string) {
   return Number.parseFloat(value || "0").toFixed(0);
 }
 
-export default function FleetCard({ car, showRentToOwn = false }: FleetCardProps) {
+export default function FleetCard({ car, showRentToOwn = false, searchParams }: FleetCardProps) {
+  const href = `/cars/${car.id}${searchParams ? `?${searchParams}` : ""}`;
   return (
     <div className="perfect-fleet-item fleet-card">
-      <Link href={`/cars/${car.id}`} className="image-box fleet-card-image-link" data-cursor-text="View">
+      <Link href={href} className="image-box fleet-card-image-link" data-cursor-text="View">
         <img src={car.image} alt={car.name} />
       </Link>
 
@@ -59,7 +61,7 @@ export default function FleetCard({ car, showRentToOwn = false }: FleetCardProps
           </div>
 
           <div className="perfect-fleet-btn">
-            <Link href={`/cars/${car.id}`} className="section-icon-btn" data-cursor-text="Rent">
+            <Link href={href} className="section-icon-btn" data-cursor-text="Rent">
               <img src="/images/arrow-white.svg" alt="Rent now" />
             </Link>
           </div>

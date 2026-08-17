@@ -237,10 +237,10 @@ export default function ListCarPage() {
                     </h2>
                     <p style={{ color: "var(--text-color)", fontSize: "14px" }}>
                       {mode === "sell" 
-                        ? "List your car for sale on the PhillipCars marketplace" 
+                        ? "List your car for sale on the Zoomli marketplace"
                         : mode === "rto" 
                           ? "Earn recurring income with structured Rent-to-Own lease options" 
-                          : "Earn money by sharing your car for rent on the PhillipCars platform"}
+                          : "Earn money by sharing your car for rent on Zoomli"}
                     </p>
                   </div>
 

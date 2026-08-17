@@ -1,4 +1,4 @@
-import { Pool, type PoolConfig, type QueryResult, type QueryResultRow } from "pg";
+import { Pool, type PoolClient, type PoolConfig, type QueryResult, type QueryResultRow } from "pg";
 
 let pool: Pool;
 
@@ -40,6 +40,8 @@ if (process.env.NODE_ENV === 'production') {
   if (!globalForPostgres._postgresPool) {
     globalForPostgres._postgresPool = new Pool({
       ...getPoolConfig(),
+      connectionTimeoutMillis: 4000,
+      idleTimeoutMillis: 10000,
     });
   }
   pool = globalForPostgres._postgresPool;
@@ -51,6 +53,21 @@ export async function query<T extends QueryResultRow = QueryResultRow>(
 ): Promise<QueryResult<T>> {
   const res = params ? await pool.query(text, params) : await pool.query(text);
   return res as QueryResult<T>;
+}
+
+export async function withTransaction<T>(work: (client: PoolClient) => Promise<T>): Promise<T> {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    const result = await work(client);
+    await client.query("COMMIT");
+    return result;
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
 }
 
 export default pool;

@@ -3,6 +3,7 @@
 import { query } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { getCarByIdAction } from "@/app/actions/cars";
+import { MELBOURNE_LOCATIONS } from "@/lib/australia";
 
 export interface BookingPayload {
   carId: string;
@@ -56,6 +57,12 @@ export async function createBookingAction(payload: BookingPayload) {
     const pick = new Date(pickupDate);
     const ret = new Date(returnDate);
 
+    const locations = new Set<string>(MELBOURNE_LOCATIONS.map((location) => location.value));
+    if (!locations.has(pickupLocation) || !locations.has(returnLocation)) return { success: false, error: "Choose a valid Melbourne service location." };
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(pickupDate) || !/^\d{4}-\d{2}-\d{2}$/.test(returnDate) || Number.isNaN(pick.getTime()) || Number.isNaN(ret.getTime())) return { success: false, error: "Choose valid booking dates." };
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    if (pick < today) return { success: false, error: "Pickup date cannot be in the past." };
+
     if (ret <= pick) {
       return { success: false, error: "Return date must be after pickup date." };
     }
@@ -94,7 +101,8 @@ export async function createBookingAction(payload: BookingPayload) {
     return { success: true, bookingId };
   } catch (err: unknown) {
     console.error("Booking error:", err);
-    return { success: false, error: err instanceof Error ? err.message : "An error occurred during booking." };
+    if (typeof err === "object" && err && "code" in err && err.code === "23P01") return { success: false, error: "This vehicle is no longer available for those dates. Please choose another vehicle or journey." };
+    return { success: false, error: "We couldn’t complete the reservation. Please try again." };
   }
 }
 

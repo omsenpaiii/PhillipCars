@@ -29,7 +29,7 @@ export default function Footer() {
 
               {/* About Footer Content Start */}
               <div className="about-footer-content">
-                <p>Premium vehicle hire, ownership pathways, and local support across Melbourne and Victoria.</p>
+                <p>Premium vehicle discovery, flexible ownership pathways, and local support across Melbourne and Victoria.</p>
               </div>
               {/* About Footer Content End */}
             </div>
@@ -42,16 +42,16 @@ export default function Footer() {
               <h3>legal policy</h3>
               <ul>
                 <li>
-                  <button type="button" className="footer-text-button">term & condition</button>
+                  <Link href="/terms">terms of use</Link>
                 </li>
                 <li>
-                  <button type="button" className="footer-text-button">privacy policy</button>
+                  <Link href="/privacy">privacy policy</Link>
                 </li>
                 <li>
-                  <button type="button" className="footer-text-button">legal notice</button>
+                  <Link href="/legal-notice">legal notice</Link>
                 </li>
                 <li>
-                  <button type="button" className="footer-text-button">accessibility</button>
+                  <Link href="/accessibility">accessibility</Link>
                 </li>
               </ul>
             </div>
@@ -128,7 +128,7 @@ export default function Footer() {
             <div className="col-lg-6 col-md-7">
               {/* Footer Copyright Start */}
               <div className="footer-copyright-text">
-                <p>© 2026 PhillipCars. All rights reserved.</p>
+                <p>© 2026 Zoomli. All rights reserved.</p>
               </div>
               {/* Footer Copyright End */}
             </div>

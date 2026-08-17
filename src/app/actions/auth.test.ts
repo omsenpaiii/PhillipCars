@@ -87,6 +87,6 @@ describe("auth server actions", () => {
     expect(result).toEqual({ success: true });
     expect(mockQuery.mock.calls[0][1]).toEqual(["driver@example.com"]);
     expect(mockQuery.mock.calls[1][0]).toContain("UPDATE public.profiles");
-    expect(mockCreateSession).toHaveBeenCalledWith("user-1");
+    expect(mockCreateSession).toHaveBeenCalledWith("user-1", 0);
   });
 });

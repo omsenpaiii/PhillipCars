@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
 import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
@@ -30,8 +31,12 @@ const flushAllAsyncUpdates = async () => {
 // Mock next/navigation with STABLE object reference
 const mockGet = vi.fn().mockReturnValue(null);
 const mockSearchParams = { get: mockGet };
+const mockReplace = vi.fn();
+const mockPush = vi.fn();
 vi.mock("next/navigation", () => ({
   useSearchParams: () => mockSearchParams,
+  useRouter: () => ({ replace: mockReplace, push: mockPush }),
+  usePathname: () => "/cars",
 }));
 
 // Mock Server Action
@@ -92,7 +97,7 @@ describe("CarsPage Search Behavior", () => {
 
     expect(mockGetCarsAction).toHaveBeenCalledTimes(1);
 
-    const searchInput = screen.getByPlaceholderText("Search name...") as HTMLInputElement;
+    const searchInput = screen.getByPlaceholderText("Make or model") as HTMLInputElement;
 
     // Simulate rapid typing
     await act(async () => {
@@ -122,8 +127,7 @@ describe("CarsPage Search Behavior", () => {
 
     expect(mockGetCarsAction).toHaveBeenCalledTimes(1);
 
-    const searchInput = screen.getByPlaceholderText("Search name...") as HTMLInputElement;
-    const form = searchInput.closest("form") as HTMLFormElement;
+    const searchInput = screen.getByPlaceholderText("Make or model") as HTMLInputElement;
 
     // Type query
     await act(async () => {
@@ -133,21 +137,13 @@ describe("CarsPage Search Behavior", () => {
 
     // Submitting the form
     await act(async () => {
-      fireEvent.submit(form);
+      fireEvent.blur(searchInput);
     });
 
     // Wait for cascading fetch actions
     await flushAllAsyncUpdates();
 
-    // getCarsAction should be called again
-    expect(mockGetCarsAction).toHaveBeenCalledTimes(2);
-    // Verified that it was called with the search filter
-    expect(mockGetCarsAction).toHaveBeenLastCalledWith({
-      type: "all",
-      transmission: "all",
-      maxPrice: 500,
-      search: "BMW",
-    });
+    expect(mockReplace).toHaveBeenCalledWith(expect.stringContaining("q=BMW"), { scroll: false });
   });
 
   it("should filter the fleet by Caravan Hire without opening a native select", async () => {
@@ -162,12 +158,7 @@ describe("CarsPage Search Behavior", () => {
     });
     await flushAllAsyncUpdates();
 
-    expect(mockGetCarsAction).toHaveBeenLastCalledWith({
-      type: "caravan",
-      transmission: "all",
-      maxPrice: 500,
-      search: undefined,
-    });
+    expect(mockReplace).toHaveBeenCalledWith(expect.stringContaining("type=caravan"), { scroll: false });
     expect(caravanOption.getAttribute("aria-pressed")).toBe("true");
   });
 });

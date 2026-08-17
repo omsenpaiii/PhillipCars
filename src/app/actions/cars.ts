@@ -14,12 +14,21 @@ export interface CarFilters {
   transmission?: string;
   maxPrice?: number;
   search?: string;
+  pickupDate?: string;
+  returnDate?: string;
+  sort?: "price-asc" | "price-desc" | "name-asc";
 }
 
 export async function getCarsAction(filters?: CarFilters) {
   try {
     const res = await query<FleetCar>("SELECT * FROM public.cars WHERE status = 'available' ORDER BY price_per_day ASC");
-    return { success: true, cars: filterFleetCars(mergeFleetCars(res.rows), filters) };
+    let cars = mergeFleetCars(res.rows);
+    if (filters?.pickupDate && filters?.returnDate) {
+      const unavailable = await query<{ car_id: string }>(`SELECT DISTINCT car_id FROM public.bookings WHERE status <> 'cancelled' AND pickup_date < $2::date AND return_date > $1::date`, [filters.pickupDate, filters.returnDate]);
+      const ids = new Set(unavailable.rows.map((row) => row.car_id));
+      cars = cars.filter((car) => !ids.has(car.id));
+    }
+    return { success: true, cars: filterFleetCars(cars, filters) };
   } catch (err: unknown) {
     console.error("Error fetching cars:", err);
     return { success: true, cars: filterFleetCars(mergeFleetCars([]), filters) };

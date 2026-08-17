@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import ContactUsForm from "@/components/ContactUsForm";
 
 export const metadata: Metadata = {
-  title: "Contact Us | PhillipCars",
-  description: "Get in touch with PhillipCars for rental support, rent-to-own questions, or help listing your vehicle.",
+  title: "Contact Us | Zoomli",
+  description: "Contact Zoomli for Melbourne vehicle rental support, rent-to-own questions, or help listing your vehicle.",
 };
 
 const contactDetails = [
@@ -46,7 +46,7 @@ export default function ContactUsPage() {
           <div className="page-header-box">
             <h1 style={{ color: "#fff" }}>Contact Us</h1>
             <p style={{ color: "#eee", maxWidth: "640px", margin: "12px auto 0" }}>
-              Reach the PhillipCars team in Melbourne for bookings, host support, and help finding the right next step.
+              Reach the Zoomli team in Melbourne for bookings, host support, and help finding the right next step.
             </p>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function ContactUsPage() {
 
           <div className="google-map-iframe">
             <iframe
-              title="PhillipCars location map"
+              title="Zoomli Melbourne location map"
               src="https://www.google.com/maps?q=Melbourne%20Victoria%20Australia&z=11&output=embed"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

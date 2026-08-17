@@ -15,8 +15,16 @@ const epilogue = Epilogue({
 });
 
 export const metadata: Metadata = {
-  title: "PhillipCars | Premium Car Hire in Melbourne",
+  metadataBase: new URL(process.env.SITE_URL || "https://phillip-cars.vercel.app"),
+  title: "Zoomli | Premium Car Hire in Melbourne",
   description: "Premium car hire, rent-to-own options, and vehicle listings across Melbourne and Victoria, Australia.",
+  applicationName: "Zoomli",
+  openGraph: {
+    title: "Zoomli | Premium Car Hire in Melbourne",
+    description: "Search quality vehicles and plan your next Melbourne journey with Zoomli.",
+    type: "website",
+    locale: "en_AU",
+  },
   icons: {
     icon: "/images/favicon.png",
   }

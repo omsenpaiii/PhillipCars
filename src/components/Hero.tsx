@@ -1,25 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { FadeIn, ScaleIn } from "./Motion";
 import Link from "next/link";
 import { MELBOURNE_LOCATIONS } from "@/lib/australia";
+import { getDefaultVehicleSearch, serializeVehicleSearch, validateVehicleSearch } from "@/lib/vehicle-search";
 
 export default function Hero() {
-  const [carType, setCarType] = useState("");
-  const [pickupLoc, setPickupLoc] = useState("");
-  const [pickupDate, setPickupDate] = useState("");
-  const [dropoffLoc, setDropoffLoc] = useState("");
-  const [returnDate, setReturnDate] = useState("");
+  const defaults = useMemo(() => getDefaultVehicleSearch(), []);
+  const [carType, setCarType] = useState("all");
+  const [pickupLoc, setPickupLoc] = useState(defaults.pickup);
+  const [pickupDate, setPickupDate] = useState(defaults.pickupDate);
+  const [dropoffLoc, setDropoffLoc] = useState(defaults.dropoff);
+  const [returnDate, setReturnDate] = useState(defaults.returnDate);
+  const [sameLocation, setSameLocation] = useState(true);
+  const [error, setError] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ carType, pickupLoc, pickupDate, dropoffLoc, returnDate });
-    // Redirect to cars listing with filters in query params
-    const params = new URLSearchParams();
-    if (carType) params.append("type", carType);
-    if (pickupLoc) params.append("pickup", pickupLoc);
-    window.location.href = `/cars?${params.toString()}`;
+    const criteria = { ...defaults, type: carType, pickup: pickupLoc, pickupDate, dropoff: sameLocation ? pickupLoc : dropoffLoc, returnDate };
+    const validation = validateVehicleSearch(criteria);
+    if (validation) { setError(validation); return; }
+    window.location.href = `/cars?${serializeVehicleSearch(criteria).toString()}`;
   };
 
   return (
@@ -84,9 +86,7 @@ export default function Hero() {
                           onChange={(e) => setCarType(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
                         >
-                          <option value="" disabled>
-                            Choose Car Type
-                          </option>
+                          <option value="all">All vehicle types</option>
                           <option value="sport">Performance</option>
                           <option value="convertible">Convertible</option>
                           <option value="sedan">Sedan</option>
@@ -111,9 +111,6 @@ export default function Hero() {
                           onChange={(e) => setPickupLoc(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
                         >
-                          <option value="" disabled>
-                            Pick Up Location
-                          </option>
                           {MELBOURNE_LOCATIONS.map((location) => (
                             <option key={location.value} value={location.value}>{location.label}</option>
                           ))}
@@ -151,7 +148,7 @@ export default function Hero() {
                     {/* Rent Details Item End */}
 
                     {/* Rent Details Item Start */}
-                    <div className="rent-details-item">
+                    {!sameLocation && <div className="rent-details-item">
                       <div className="icon-box">
                         <img src="/images/icon-rent-details-4.svg" alt="Dropoff Location" />
                       </div>
@@ -164,15 +161,12 @@ export default function Hero() {
                           onChange={(e) => setDropoffLoc(e.target.value)}
                           style={{ background: "transparent", border: "none", color: "#616161", outline: "none" }}
                         >
-                          <option value="" disabled>
-                            Drop Off Location
-                          </option>
                           {MELBOURNE_LOCATIONS.map((location) => (
                             <option key={location.value} value={location.value}>{location.label}</option>
                           ))}
                         </select>
                       </div>
-                    </div>
+                    </div>}
                     {/* Rent Details Item End */}
 
                     {/* Rent Details Item Start */}
@@ -222,7 +216,7 @@ export default function Hero() {
                           padding: 0
                         }}
                         className="search-btn-hero"
-                        aria-label="Search"
+                        aria-label="Search cars"
                         onMouseEnter={(e) => {
                           e.currentTarget.style.backgroundColor = "var(--primary-color)";
                         }}
@@ -238,6 +232,10 @@ export default function Hero() {
               </div>
             </div>
           </form>
+          <div className="journey-options">
+            <label><input type="checkbox" checked={sameLocation} onChange={(event) => setSameLocation(event.target.checked)} /> Return to the same location</label>
+            {error && <p role="alert">{error}</p>}
+          </div>
           {/* Filter Form End */}
         </div>
       </ScaleIn>

@@ -59,6 +59,37 @@
 	--accent-font			: "Epilogue", sans-serif;
 }
 
+/* Zoomli journey search, account recovery and legal experience */
+.fleet-page-header { padding: 150px 0 70px; text-align: center; color: #fff; background-image: linear-gradient(100deg,rgba(10,10,10,.88),rgba(10,10,10,.45)),url('/images/page-header-bg.jpg'); background-size: cover; }
+.fleet-page-header h1,.fleet-page-header p { color:#fff; }
+.fleet-search-page { padding: 44px 15px 80px; }
+.journey-search-bar { display:grid; grid-template-columns:repeat(4,minmax(130px,1fr)) auto; gap:10px; padding:18px; margin-top:-78px; position:relative; z-index:2; background:#fff; border:1px solid var(--divider-color); border-radius:22px; box-shadow:0 20px 50px rgba(0,0,0,.12); }
+.journey-search-bar label,.filter-label,.password-reset-card label { display:flex; flex-direction:column; gap:7px; color:var(--primary-color); font-size:12px; font-weight:800; }
+.journey-search-bar select,.journey-search-bar input { min-height:46px; padding:0 12px; border:1px solid var(--divider-color); border-radius:12px; background:#fafafa; }
+.journey-search-bar .btn-default { align-self:end; min-height:46px; }
+.journey-search-bar [role=alert] { grid-column:1/-1; color:#b42318; margin:0; }
+.journey-options { max-width:1320px; margin:10px auto 0; padding:0 15px; display:flex; gap:20px; font-weight:700; }
+.journey-options p { color:#b42318; margin:0; }
+.fleet-results-layout { display:grid; grid-template-columns:280px 1fr; gap:32px; margin-top:40px; }
+.fleet-filter-panel { align-self:start; position:sticky; top:120px; }
+.filter-label { margin:22px 0; }
+.filter-label input[type=range] { accent-color:var(--accent-color); }
+.results-toolbar { display:flex; justify-content:space-between; align-items:end; margin-bottom:22px; }
+.results-toolbar span { color:var(--accent-color); font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }
+.results-toolbar select { padding:11px 14px; border:1px solid var(--divider-color); border-radius:12px; background:#fff; }
+.empty-results { padding:80px 24px; text-align:center; background:var(--secondary-color); border-radius:22px; }
+.reset-page { min-height:78vh; padding:170px 16px 80px; background:var(--secondary-color); }
+.password-reset-card { max-width:520px; margin:auto; padding:42px; border:1px solid var(--divider-color); border-radius:24px; background:#fff; box-shadow:0 20px 60px rgba(0,0,0,.06); }
+.password-reset-card label { margin:20px 0; font-size:14px; }
+.password-reset-card input { min-height:50px; }
+.password-field { position:relative; }.password-field button { position:absolute; right:8px; top:5px; width:40px; height:40px; border:0; background:transparent; }
+.auth-submit { width:100%; border:0; margin-bottom:20px; }
+.legal-hero { padding:170px 0 70px; }.legal-hero-inner { max-width:850px; }.legal-eyebrow { color:var(--accent-color); font-weight:800; text-transform:uppercase; letter-spacing:.12em; }
+.legal-layout { display:grid; grid-template-columns:220px minmax(0,760px); justify-content:center; gap:70px; padding:70px 15px 100px; }.legal-nav { position:sticky; top:120px; align-self:start; display:flex; flex-direction:column; gap:12px; }.legal-nav p { font-weight:800; }.legal-content section { margin:0 0 42px; }.legal-content h2 { font-size:26px; }.legal-content li { margin-bottom:9px; }.legal-note,.legal-review-note { padding:22px; margin-bottom:36px; border-radius:16px; background:#fff3ee; border-left:4px solid var(--accent-color); }
+@media print { header,footer,.legal-nav { display:none!important; }.legal-hero { padding:20px 0; }.legal-layout { display:block; padding:20px; }.legal-content { max-width:none; } }
+@media(max-width:991px){.journey-search-bar{grid-template-columns:repeat(2,1fr)}.fleet-results-layout{grid-template-columns:1fr}.fleet-filter-panel{position:static}.legal-layout{grid-template-columns:1fr;gap:30px}.legal-nav{position:static;flex-direction:row;flex-wrap:wrap}}
+@media(max-width:575px){.journey-search-bar{grid-template-columns:1fr;margin-top:-45px}.results-toolbar{align-items:start;gap:16px;flex-direction:column}.password-reset-card{padding:28px 22px}.legal-hero{padding:140px 0 50px}}
+
 /************************************/
 /*** 	   02. General css		  ***/
 /************************************/

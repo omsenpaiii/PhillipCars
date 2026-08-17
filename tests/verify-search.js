@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const CDPClient = require("./cdp-client");
 
 function sleep(ms) {

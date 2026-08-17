@@ -120,7 +120,7 @@ export const SEED_FLEET: FleetCar[] = [
 export function normalizeFleetCar(car: Partial<FleetCar>): FleetCar {
   return {
     id: String(car.id ?? ""),
-    name: String(car.name ?? "Phillip Cars Fleet Vehicle"),
+    name: String(car.name ?? "Zoomli Fleet Vehicle"),
     type: String(car.type ?? "luxury").toLowerCase(),
     image: String(car.image ?? "/images/perfect-fleet-img-1.png"),
     price_per_day: String(car.price_per_day ?? "0"),
@@ -161,6 +161,7 @@ export function filterFleetCars(cars: FleetCar[], filters?: {
   transmission?: string;
   maxPrice?: number;
   search?: string;
+  sort?: "price-asc" | "price-desc" | "name-asc";
 }) {
   const search = filters?.search?.trim().toLowerCase();
 
@@ -172,5 +173,5 @@ export function filterFleetCars(cars: FleetCar[], filters?: {
       if (search && !`${car.name} ${car.type}`.toLowerCase().includes(search)) return false;
       return true;
     })
-    .sort((a, b) => Number(a.price_per_day) - Number(b.price_per_day));
+    .sort((a, b) => filters?.sort === "price-desc" ? Number(b.price_per_day) - Number(a.price_per_day) : filters?.sort === "name-asc" ? a.name.localeCompare(b.name) : Number(a.price_per_day) - Number(b.price_per_day));
 }

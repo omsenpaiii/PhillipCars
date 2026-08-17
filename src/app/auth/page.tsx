@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ScaleIn } from "@/components/Motion";
 import BrandedLoader from "@/components/BrandedLoader";
+import Link from "next/link";
 
 function AuthFormContent() {
   const searchParams = useSearchParams();
@@ -333,6 +334,8 @@ function AuthFormContent() {
                       </p>
                     )}
                   </div>
+
+                  {tab === "login" && <div className="text-end mb-3"><Link href="/forgot-password" className="auth-forgot-link">Forgot your password?</Link></div>}
 
                   <button
                     type="submit"
