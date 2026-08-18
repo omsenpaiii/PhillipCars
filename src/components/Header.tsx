@@ -63,21 +63,20 @@ export default function Header() {
                       Our Fleets
                     </Link>
                   </li>
-                  <li className="nav-item submenu">
-                    <Link className="nav-link" href="#" onClick={(e) => e.preventDefault()} style={pathname === "/list-car" ? { color: "var(--accent-color)" } : undefined}>
+                  <li className="nav-item nav-solution-item">
+                    <Link className="nav-link" href="/list-car" style={pathname === "/list-car" ? { color: "var(--accent-color)" } : undefined}>
                       List Your Car
                     </Link>
-                    <ul>
-                      <li>
-                        <Link href="/list-car">List Your Car</Link>
-                      </li>
-                      <li>
-                        <Link href="/list-car?mode=sell">Sell Your Car</Link>
-                      </li>
-                      <li>
-                        <Link href="/cars">Rent to Own</Link>
-                      </li>
-                    </ul>
+                  </li>
+                  <li className="nav-item nav-solution-item">
+                    <Link className="nav-link" href="/list-car?mode=sell">
+                      Sell Your Car
+                    </Link>
+                  </li>
+                  <li className="nav-item nav-solution-item">
+                    <Link className="nav-link" href="/cars">
+                      Rent to Own
+                    </Link>
                   </li>
                   <li className="nav-item">
                     <Link className="nav-link" href="/#services">
